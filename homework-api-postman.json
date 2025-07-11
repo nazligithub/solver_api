@@ -1,0 +1,221 @@
+{
+  "info": {
+    "name": "Homework API",
+    "description": "AI-powered homework solving API using Google Gemini",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Homework",
+      "item": [
+        {
+          "name": "Solve Homework",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": ""
+                },
+                {
+                  "key": "user_id",
+                  "value": "test-user-123",
+                  "type": "text"
+                },
+                {
+                  "key": "locale",
+                  "value": "tr",
+                  "type": "text",
+                  "description": "Language code (tr, en, es, fr, de, it, pt, ru, ja, zh, ar)"
+                },
+                {
+                  "key": "subject",
+                  "value": "mathematics",
+                  "type": "text",
+                  "description": "Optional: Subject (mathematics, physics, chemistry, etc.)"
+                },
+                {
+                  "key": "grade_level",
+                  "value": "8th grade",
+                  "type": "text",
+                  "description": "Optional: Grade level"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/homework/solve",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "homework", "solve"]
+            },
+            "description": "Upload a homework image and get AI-powered step-by-step solution"
+          }
+        },
+        {
+          "name": "Get History",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/homework/history?user_id=test-user-123",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "homework", "history"],
+              "query": [
+                {
+                  "key": "user_id",
+                  "value": "test-user-123",
+                  "description": "Required: User ID to get history for"
+                }
+              ]
+            },
+            "description": "Get homework submission history for a specific user"
+          }
+        },
+        {
+          "name": "Get Submission Details",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/homework/submission/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "homework", "submission", "1"]
+            },
+            "description": "Get detailed information about a specific homework submission"
+          }
+        },
+        {
+          "name": "Get User Statistics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/homework/stats?user_id=test-user-123",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "homework", "stats"],
+              "query": [
+                {
+                  "key": "user_id",
+                  "value": "test-user-123",
+                  "description": "Required: User ID to get statistics for"
+                }
+              ]
+            },
+            "description": "Get homework statistics for a specific user"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Chat",
+      "item": [
+        {
+          "name": "Send Message",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": \"test-user-123\",\n  \"message\": \"Merhaba, matematik konusunda yardım edebilir misin?\",\n  \"conversation_id\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/chat/send",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "chat", "send"]
+            }
+          }
+        },
+        {
+          "name": "Get Conversations",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/chat/conversations?user_id=test-user-123",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "chat", "conversations"],
+              "query": [
+                {
+                  "key": "user_id",
+                  "value": "test-user-123"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Conversation",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/chat/conversations/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "chat", "conversations", "1"]
+            }
+          }
+        },
+        {
+          "name": "Create Conversation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": \"test-user-123\",\n  \"title\": \"Matematik Yardım\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/chat/conversations",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "chat", "conversations"]
+            }
+          }
+        },
+        {
+          "name": "Delete Conversation",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/chat/conversations/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "chat", "conversations", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["health"]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ]
+}

@@ -1,0 +1,436 @@
+{
+  "info": {
+    "name": "Hair Styling API",
+    "description": "API for changing hair colors and styles using AI",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Hair Operations",
+      "item": [
+        {
+          "name": "Change Hair Color",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-user-id",
+                "value": "user123",
+                "type": "text",
+                "description": "User ID for tracking (optional, falls back to IP)"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": ""
+                },
+                {
+                  "key": "color",
+                  "value": "Chestnut Brown",
+                  "type": "text",
+                  "description": "Color name (Jet Black, Chestnut Brown, Honey Blonde, Auburn, etc.) or hex code (#1B1B1B, #8B4513, etc.)"
+                },
+                {
+                  "key": "gender",
+                  "value": "male",
+                  "type": "text",
+                  "description": "Gender (male/female) - optional, helps to select appropriate color variant"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/hair/change-color",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "hair", "change-color"]
+            },
+            "description": "Change hair color in an image. Accepts predefined natural hair color names (Jet Black, Natural Black, Dark Chocolate, Chestnut Brown, Caramel Brown, Honey Blonde, Platinum Blonde, Strawberry Blonde, Copper Red, Auburn, Ash Gray, Silver Fox, etc.) or custom hex codes (#1B1B1B, #8B4513, etc.). For custom colors, provide any valid hex code."
+          }
+        },
+        {
+          "name": "Change Hair Color (Custom Hex)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-user-id",
+                "value": "user123",
+                "type": "text",
+                "description": "User ID for tracking (optional, falls back to IP)"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": ""
+                },
+                {
+                  "key": "color",
+                  "value": "#FF69B4",
+                  "type": "text",
+                  "description": "Custom hex color code (e.g., #FF69B4 for hot pink)"
+                },
+                {
+                  "key": "gender",
+                  "value": "female",
+                  "type": "text",
+                  "description": "Gender (male/female) - optional"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/hair/change-color",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "hair", "change-color"]
+            },
+            "description": "Change hair color using a custom hex color code. Provide any valid 6-digit hex color code."
+          }
+        },
+        {
+          "name": "Change Hair Style",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-user-id",
+                "value": "user123",
+                "type": "text",
+                "description": "User ID for tracking (optional, falls back to IP)"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": ""
+                },
+                {
+                  "key": "styleId",
+                  "value": "1",
+                  "type": "text",
+                  "description": "Style ID from the styles list (optional if gender is provided)"
+                },
+                {
+                  "key": "gender",
+                  "value": "male",
+                  "type": "text",
+                  "description": "Gender (male/female) - optional if styleId is provided"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/hair/change-style",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "hair", "change-style"]
+            },
+            "description": "Change hair style in an image. Provide either styleId or gender."
+          }
+        },
+        {
+          "name": "Analyze Face Shape",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-user-id",
+                "value": "user123",
+                "type": "text",
+                "description": "User ID for tracking (optional, falls back to IP)"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": ""
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/hair/analyze-face",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "hair", "analyze-face"]
+            },
+            "description": "Analyze face shape using AI and get personalized hair recommendations in JSON format with quick tips and hair properties."
+          }
+        },
+        {
+          "name": "Get Hair Styles",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-user-id",
+                "value": "user123",
+                "type": "text",
+                "description": "User ID for filtering history (optional, falls back to IP)"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/hair/styles?gender=male",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "hair", "styles"],
+              "query": [
+                {
+                  "key": "gender",
+                  "value": "male",
+                  "description": "Filter by gender (optional)"
+                }
+              ]
+            },
+            "description": "Get available hair styles. Optionally filter by gender."
+          }
+        },
+        {
+          "name": "Get Hair Colors",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-user-id",
+                "value": "user123",
+                "type": "text",
+                "description": "User ID for filtering history (optional, falls back to IP)"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/hair/colors?gender=male",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "hair", "colors"],
+              "query": [
+                {
+                  "key": "gender",
+                  "value": "male",
+                  "description": "Filter by gender (optional)"
+                }
+              ]
+            },
+            "description": "Get available hair colors with their hex codes and preview images. Optionally filter by gender."
+          }
+        },
+        {
+          "name": "Get Processing History",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-user-id",
+                "value": "user123",
+                "type": "text",
+                "description": "User ID for filtering history (optional, falls back to IP)"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/hair/history",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "hair", "history"]
+            },
+            "description": "Get hair color/style change history for the current user. Send user ID in x-user-id header."
+          }
+        },
+        {
+          "name": "Get Face Analysis History",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-user-id",
+                "value": "user123",
+                "type": "text",
+                "description": "User ID for filtering history (optional, falls back to IP)"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/hair/face-analyses",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "hair", "face-analyses"]
+            },
+            "description": "Get face shape analysis history for the current user. Send user ID in x-user-id header."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Chat (Hair GPT)",
+      "item": [
+        {
+          "name": "Create Conversation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-user-id",
+                "value": "user123",
+                "type": "text",
+                "description": "User ID for tracking (optional, falls back to IP)"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"message\": \"Merhaba, yüz şeklime uygun saç modelleri önerir misin?\",\n    \"faceAnalysisId\": null\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/chat/conversations",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "chat", "conversations"]
+            },
+            "description": "Create a new chat conversation. Optionally include a face analysis ID to provide context."
+          }
+        },
+        {
+          "name": "Get Conversations",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-user-id",
+                "value": "user123",
+                "type": "text",
+                "description": "User ID for filtering conversations"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/chat/conversations",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "chat", "conversations"]
+            },
+            "description": "Get all active conversations for the user."
+          }
+        },
+        {
+          "name": "Get Conversation Details",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-user-id",
+                "value": "user123",
+                "type": "text",
+                "description": "User ID for verification"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/chat/conversations/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "chat", "conversations", "1"]
+            },
+            "description": "Get a specific conversation with all messages."
+          }
+        },
+        {
+          "name": "Send Message",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-user-id",
+                "value": "user123",
+                "type": "text",
+                "description": "User ID for verification"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"message\": \"Kısa saçlar bana yakışır mı?\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/chat/conversations/1/messages",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "chat", "conversations", "1", "messages"]
+            },
+            "description": "Send a message to an existing conversation."
+          }
+        },
+        {
+          "name": "Add Face Analysis to Chat",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-user-id",
+                "value": "user123",
+                "type": "text",
+                "description": "User ID for verification"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"faceAnalysisId\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/chat/conversations/1/add-face-analysis",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "chat", "conversations", "1", "add-face-analysis"]
+            },
+            "description": "Add a face analysis to provide context to the chat."
+          }
+        },
+        {
+          "name": "Delete Conversation",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "x-user-id",
+                "value": "user123",
+                "type": "text",
+                "description": "User ID for verification"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/chat/conversations/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "chat", "conversations", "1"]
+            },
+            "description": "Soft delete a conversation (marks as inactive)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["health"]
+        },
+        "description": "Check if the API is running."
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ]
+}
