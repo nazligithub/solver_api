@@ -1,5 +1,5 @@
 const HomeworkService = require('../services/homeworkService');
-const { db } = require('../config/database');
+const db = require('../config/database');
 const { uploadToSupabase } = require('../services/uploadService');
 const { successResponse, errorResponse } = require('../utils/response');
 
@@ -8,8 +8,28 @@ const homeworkService = new HomeworkService();
 const homeworkController = {
   // POST /api/homework/solve
   async solveHomework(req, res) {
+    const totalStartTime = Date.now();
+    const timings = {};
+    
     try {
-      const { user_id, locale = 'tr', subject, grade_level } = req.body;
+      console.log(`📸 Homework solve request [${req.id}]`);
+      
+      // Get user_id from headers (consistent with other controllers)
+      const user_id = req.headers['x-user-id'] || req.headers['user-id'] || req.ip;
+      
+      // Get locale from headers, default to 'en'
+      const supportedLocales = ['tr', 'en', 'es', 'fr', 'de', 'it', 'pt', 'ru', 'ja', 'zh', 'ar'];
+      let locale = req.headers['x-locale'] || req.headers['locale'] || req.headers['accept-language']?.split(',')[0]?.split('-')[0] || 'en';
+      
+      // Validate locale
+      if (!supportedLocales.includes(locale)) {
+        console.log(`⚠️  Unsupported locale: ${locale}, defaulting to 'en'`);
+        locale = 'en';
+      }
+      
+      console.log(`🌐 Locale: ${locale}`);
+      
+      const { subject_id } = req.body;
       
       if (!req.file) {
         return errorResponse(res, 'No image file uploaded', 400);
@@ -19,31 +39,50 @@ const homeworkController = {
         return errorResponse(res, 'User ID is required', 400);
       }
 
+      // Validate subject_id
+      const validationStart = Date.now();
+      if (subject_id) {
+        console.log('📚 Validating subject:', subject_id);
+        const subjectCheck = await db.query('SELECT id FROM subjects WHERE id = $1', [subject_id]);
+        if (subjectCheck.rows.length === 0) {
+          return errorResponse(res, 'Invalid subject ID', 400);
+        }
+      }
+
+      timings.validation = Date.now() - validationStart;
+      
       // Start tracking submission
+      const dbStart = Date.now();
+      console.log('💾 Creating submission record');
       const submissionResult = await db.query(
-        `INSERT INTO homework_submissions (user_id, subject, grade_level, locale, status) 
-         VALUES ($1, $2, $3, $4, 'processing') 
+        `INSERT INTO homework_submissions (user_id, subject_id, locale, status) 
+         VALUES ($1, $2, $3, 'processing') 
          RETURNING id`,
-        [user_id, subject, grade_level, locale]
+        [user_id, subject_id || null, locale]
       );
+      timings.createSubmission = Date.now() - dbStart;
       
       const submissionId = submissionResult.rows[0].id;
       const startTime = Date.now();
 
       try {
         // Upload image to Supabase
+        const uploadStart = Date.now();
+        console.log('☁️  Uploading image');
         const uploadResult = await uploadToSupabase(req.file, 'homework-images');
+        timings.imageUpload = Date.now() - uploadStart;
         
         // Save image upload record
+        const imageRecordStart = Date.now();
         const imageResult = await db.query(
-          `INSERT INTO image_uploads (user_id, original_filename, storage_url, file_size, mime_type)
+          `INSERT INTO homework_image_uploads (user_id, original_filename, storage_url, file_size, mime_type)
            VALUES ($1, $2, $3, $4, $5)
            RETURNING id`,
           [
             user_id,
             req.file.originalname,
             uploadResult.url,
-            req.file.size,
+            req.file.buffer.length,
             req.file.mimetype
           ]
         );
@@ -55,19 +94,24 @@ const homeworkController = {
           `UPDATE homework_submissions SET image_id = $1 WHERE id = $2`,
           [imageId, submissionId]
         );
+        timings.imageRecord = Date.now() - imageRecordStart;
 
         // Solve homework using AI
+        const aiStart = Date.now();
+        console.log('🤖 Sending to AI');
         const solutionData = await homeworkService.solveHomework(
           req.file.buffer,
           uploadResult.url,
           locale,
-          subject,
-          grade_level
+          subject_id
         );
+        timings.aiProcessing = Date.now() - aiStart;
 
         const processingTime = Date.now() - startTime;
 
         // Save solution to database
+        const saveStart = Date.now();
+        console.log('💡 Saving solution');
         await db.query(
           `INSERT INTO homework_solutions 
            (submission_id, solution_text, steps, confidence_score, methodology, response_json)
@@ -81,14 +125,18 @@ const homeworkController = {
             JSON.stringify(solutionData.ai_response)
           ]
         );
+        timings.saveSolution = Date.now() - saveStart;
 
         // Update submission status
+        const updateStart = Date.now();
         await db.query(
           `UPDATE homework_submissions 
            SET status = 'completed', processing_time_ms = $1, completed_at = CURRENT_TIMESTAMP
            WHERE id = $2`,
           [processingTime, submissionId]
         );
+        timings.updateStatus = Date.now() - updateStart;
+        timings.total = Date.now() - totalStartTime;
 
         // Format response for client
         const clientResponse = {
@@ -107,8 +155,21 @@ const homeworkController = {
           processing_time_ms: processingTime
         };
 
+        // Print timing summary
+        console.log('⏱️  Performance Summary:');
+        console.log(`  🔍 Validation: ${timings.validation}ms`);
+        console.log(`  💾 Create submission: ${timings.createSubmission}ms`);
+        console.log(`  ☁️  Image upload: ${timings.imageUpload}ms`);
+        console.log(`  📝 Image record: ${timings.imageRecord}ms`);
+        console.log(`  🤖 AI processing: ${timings.aiProcessing}ms`);
+        console.log(`  💡 Save solution: ${timings.saveSolution}ms`);
+        console.log(`  🔄 Update status: ${timings.updateStatus}ms`);
+        console.log(`  🎯 TOTAL: ${timings.total}ms`);
+        
+        console.log('✅ Success:', submissionId);
         return successResponse(res, 'Homework solved successfully', clientResponse);
       } catch (error) {
+        console.log('❌ AI processing failed');
         // Update submission status to failed
         await db.query(
           `UPDATE homework_submissions 
@@ -119,6 +180,7 @@ const homeworkController = {
         throw error;
       }
     } catch (error) {
+      console.log('🚨 Request failed');
       console.error('Homework solving error:', error);
       return errorResponse(res, error.message || 'Failed to solve homework', error.statusCode || 500);
     }
@@ -127,49 +189,126 @@ const homeworkController = {
   // GET /api/homework/history
   async getHistory(req, res) {
     try {
-      const { user_id } = req.query;
+      console.log('📜 History request');
+      
+      // Get user_id from headers (consistent with other controllers)
+      const user_id = req.headers['x-user-id'] || req.headers['user-id'] || req.ip;
+      const { subject_id, limit = 50, group_by_subject } = req.query;
 
       if (!user_id) {
         return errorResponse(res, 'User ID is required', 400);
       }
 
-      const query = `
-        SELECT 
-          hs.id,
-          hs.subject,
-          hs.grade_level,
-          hs.status,
-          hs.locale,
-          hs.created_at,
-          hs.processing_time_ms,
-          iu.storage_url as image_url,
-          sol.solution_text,
-          sol.confidence_score,
-          sol.methodology
-        FROM homework_submissions hs
-        LEFT JOIN image_uploads iu ON hs.image_id = iu.id
-        LEFT JOIN homework_solutions sol ON hs.id = sol.submission_id
-        WHERE hs.user_id = $1
-        ORDER BY hs.created_at DESC
-        LIMIT 50
-      `;
+      // Use Supabase query builder directly
+      const supabase = require('../config/supabase');
+      
+      // First get submissions
+      let submissionsQuery = supabase
+        .from('homework_submissions')
+        .select('*')
+        .eq('user_id', user_id)
+        .order('created_at', { ascending: false })
+        .limit(parseInt(limit));
+      
+      // Add subject filter if provided
+      if (subject_id) {
+        submissionsQuery = submissionsQuery.eq('subject_id', parseInt(subject_id));
+      }
 
-      const result = await db.query(query, [user_id]);
+      const { data: submissions, error: submissionsError } = await submissionsQuery;
+      
+      if (submissionsError) {
+        console.error('Failed to fetch submissions:', submissionsError);
+        throw new Error('Failed to fetch history');
+      }
 
-      return successResponse(res, 'History retrieved successfully', {
-        submissions: result.rows.map(row => ({
+      if (!submissions || submissions.length === 0) {
+        return successResponse(res, 'History retrieved successfully', {
+          submissions: []
+        });
+      }
+
+      // Get related data
+      const submissionIds = submissions.map(s => s.id);
+      const subjectIds = [...new Set(submissions.map(s => s.subject_id).filter(Boolean))];
+      const imageIds = [...new Set(submissions.map(s => s.image_id).filter(Boolean))];
+
+      // Fetch related data in parallel
+      const [subjectsRes, imagesRes, solutionsRes] = await Promise.all([
+        subjectIds.length > 0 ? supabase.from('subjects').select('id, name, icon').in('id', subjectIds) : { data: [] },
+        imageIds.length > 0 ? supabase.from('homework_image_uploads').select('id, storage_url').in('id', imageIds) : { data: [] },
+        supabase.from('homework_solutions').select('submission_id, solution_text, confidence_score, methodology').in('submission_id', submissionIds)
+      ]);
+
+      // Create lookup maps
+      const subjectsMap = Object.fromEntries((subjectsRes.data || []).map(s => [s.id, s]));
+      const imagesMap = Object.fromEntries((imagesRes.data || []).map(i => [i.id, i]));
+      const solutionsMap = Object.fromEntries((solutionsRes.data || []).map(s => [s.submission_id, s]));
+
+      // Group by subject if requested
+      if (group_by_subject === 'true') {
+        const groupedSubmissions = {};
+        
+        submissions.forEach(row => {
+          const subject = subjectsMap[row.subject_id];
+          const subjectName = subject?.name || 'Other';
+          
+          if (!groupedSubmissions[subjectName]) {
+            groupedSubmissions[subjectName] = {
+              subject_id: row.subject_id,
+              subject_icon: subject?.icon,
+              submissions: []
+            };
+          }
+          
+          const solution = solutionsMap[row.id];
+          const image = imagesMap[row.image_id];
+          
+          groupedSubmissions[subjectName].submissions.push({
+            id: row.id,
+            subject_id: row.subject_id,
+            subject_name: subject?.name,
+            status: row.status,
+            locale: row.locale,
+            created_at: row.created_at,
+            processing_time_ms: row.processing_time_ms,
+            image_url: image?.storage_url,
+            solution: solution?.solution_text,
+            confidence: solution?.confidence_score,
+            methodology: solution?.methodology
+          });
+        });
+        
+        return successResponse(res, 'History retrieved successfully', {
+          grouped_submissions: groupedSubmissions,
+          total_submissions: submissions.length
+        });
+      }
+
+      // Map submissions with related data
+      const formattedSubmissions = submissions.map(row => {
+        const subject = subjectsMap[row.subject_id];
+        const image = imagesMap[row.image_id];
+        const solution = solutionsMap[row.id];
+        
+        return {
           id: row.id,
-          subject: row.subject,
-          grade_level: row.grade_level,
+          subject_id: row.subject_id,
+          subject_name: subject?.name,
+          subject_icon: subject?.icon,
           status: row.status,
           locale: row.locale,
           created_at: row.created_at,
           processing_time_ms: row.processing_time_ms,
-          image_url: row.image_url,
-          solution: row.solution_text,
-          confidence: row.confidence_score,
-          methodology: row.methodology
-        }))
+          image_url: image?.storage_url,
+          solution: solution?.solution_text,
+          confidence: solution?.confidence_score,
+          methodology: solution?.methodology
+        };
+      });
+
+      return successResponse(res, 'History retrieved successfully', {
+        submissions: formattedSubmissions
       });
     } catch (error) {
       console.error('Get history error:', error);
@@ -180,57 +319,67 @@ const homeworkController = {
   // GET /api/homework/submission/:id
   async getSubmission(req, res) {
     try {
+      // Get user_id from headers (consistent with other controllers)
+      const user_id = req.headers['x-user-id'] || req.headers['user-id'] || req.ip;
       const { id } = req.params;
 
-      const query = `
-        SELECT 
-          hs.*,
-          iu.storage_url as image_url,
-          sol.solution_text,
-          sol.steps,
-          sol.confidence_score,
-          sol.methodology,
-          sol.created_at as solved_at
-        FROM homework_submissions hs
-        LEFT JOIN image_uploads iu ON hs.image_id = iu.id
-        LEFT JOIN homework_solutions sol ON hs.id = sol.submission_id
-        WHERE hs.id = $1
-      `;
-
-      const result = await db.query(query, [id]);
-
-      if (result.rows.length === 0) {
-        return errorResponse(res, 'Submission not found', 404);
+      if (!user_id) {
+        return errorResponse(res, 'User ID is required', 400);
       }
 
-      const submission = result.rows[0];
+      const supabase = require('../config/supabase');
+
+      // Get submission
+      const { data: submission, error: submissionError } = await supabase
+        .from('homework_submissions')
+        .select('*')
+        .eq('id', parseInt(id))
+        .eq('user_id', user_id)
+        .single();
+
+      if (submissionError || !submission) {
+        return errorResponse(res, 'Submission not found or access denied', 404);
+      }
+
+      // Get related data in parallel
+      const [subjectRes, imageRes, solutionRes] = await Promise.all([
+        submission.subject_id ? supabase.from('subjects').select('name, icon').eq('id', submission.subject_id).single() : { data: null },
+        submission.image_id ? supabase.from('homework_image_uploads').select('storage_url').eq('id', submission.image_id).single() : { data: null },
+        supabase.from('homework_solutions').select('*').eq('submission_id', submission.id).single()
+      ]);
+
+      const subject = subjectRes.data;
+      const image = imageRes.data;
+      const solution = solutionRes.data;
       
       // Parse steps JSON
       let steps = [];
       try {
-        steps = submission.steps ? JSON.parse(submission.steps) : [];
+        steps = solution?.steps ? (typeof solution.steps === 'string' ? JSON.parse(solution.steps) : solution.steps) : [];
       } catch (e) {
         console.error('Failed to parse steps:', e);
+        steps = solution?.steps || [];
       }
 
       const response = {
         id: submission.id,
         user_id: submission.user_id,
-        subject: submission.subject,
-        grade_level: submission.grade_level,
+        subject_id: submission.subject_id,
+        subject_name: subject?.name,
+        subject_icon: subject?.icon,
         status: submission.status,
         locale: submission.locale,
-        image_url: submission.image_url,
+        image_url: image?.storage_url,
         created_at: submission.created_at,
         completed_at: submission.completed_at,
         processing_time_ms: submission.processing_time_ms,
-        solution: {
-          text: submission.solution_text,
+        solution: solution ? {
+          text: solution.solution_text,
           steps: steps,
-          confidence: submission.confidence_score,
-          methodology: submission.methodology,
-          solved_at: submission.solved_at
-        }
+          confidence: solution.confidence_score,
+          methodology: solution.methodology,
+          solved_at: solution.created_at
+        } : null
       };
 
       return successResponse(res, 'Submission retrieved successfully', response);
@@ -243,7 +392,8 @@ const homeworkController = {
   // GET /api/homework/stats
   async getStats(req, res) {
     try {
-      const { user_id } = req.query;
+      // Get user_id from headers (consistent with other controllers)
+      const user_id = req.headers['x-user-id'] || req.headers['user-id'] || req.ip;
 
       if (!user_id) {
         return errorResponse(res, 'User ID is required', 400);
@@ -255,16 +405,21 @@ const homeworkController = {
           COUNT(CASE WHEN status = 'completed' THEN 1 END) as completed_submissions,
           COUNT(CASE WHEN status = 'failed' THEN 1 END) as failed_submissions,
           AVG(CASE WHEN status = 'completed' THEN processing_time_ms END) as avg_processing_time,
-          COUNT(DISTINCT subject) as unique_subjects
+          COUNT(DISTINCT subject_id) as unique_subjects
         FROM homework_submissions
         WHERE user_id = $1
       `;
 
       const subjectQuery = `
-        SELECT subject, COUNT(*) as count
-        FROM homework_submissions
-        WHERE user_id = $1 AND subject IS NOT NULL
-        GROUP BY subject
+        SELECT 
+          s.id as subject_id,
+          s.name as subject_name,
+          s.icon as subject_icon,
+          COUNT(*) as count
+        FROM homework_submissions hs
+        JOIN subjects s ON hs.subject_id = s.id
+        WHERE hs.user_id = $1 AND hs.subject_id IS NOT NULL
+        GROUP BY s.id, s.name, s.icon
         ORDER BY count DESC
         LIMIT 5
       `;
@@ -283,7 +438,9 @@ const homeworkController = {
         avg_processing_time_ms: stats.avg_processing_time ? Math.round(stats.avg_processing_time) : 0,
         unique_subjects: parseInt(stats.unique_subjects) || 0,
         top_subjects: subjectResult.rows.map(row => ({
-          subject: row.subject,
+          subject_id: row.subject_id,
+          subject_name: row.subject_name,
+          subject_icon: row.subject_icon,
           count: parseInt(row.count)
         }))
       });

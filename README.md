@@ -10,6 +10,8 @@ An AI-powered homework solving API that uses Google Gemini to analyze homework i
 - 💬 **Chat system** - Interactive chat for educational assistance
 - 📊 **User statistics** - Track homework submissions and performance
 - 🚀 **Fast processing** - Powered by Gemini 2.5 Flash
+- 🌐 **Global curriculum** - Supports 20+ subjects including STEM, humanities, and arts
+- 🎓 **All education levels** - From kindergarten to PhD level
 
 ## Tech Stack 🛠️
 
@@ -60,6 +62,12 @@ npm run dev
 http://localhost:3000/api
 ```
 
+### Authentication
+All API endpoints require user identification through headers:
+- **Header Names**: `X-User-Id`, `User-Id`, or `UserId`
+- **Required**: Yes (falls back to IP address if not provided)
+- **Example**: `X-User-Id: user123`
+
 ---
 
 ## 1️⃣ Solve Homework
@@ -71,23 +79,25 @@ Analyzes a homework image and returns a detailed solution with step-by-step expl
 |--------|----------|--------------|
 | POST | `/homework/solve` | multipart/form-data |
 
+### Headers
+| Header | Type | Required | Description |
+|--------|------|----------|-------------|
+| X-User-Id | string | ✅ | Unique user identifier |
+| X-Locale | string | ❌ | Language code (default: 'en') - tr, en, es, fr, de, it, pt, ru, ja, zh, ar |
+
 ### Request Body
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | image | file | ✅ | Homework problem image (JPG, PNG) |
-| user_id | string | ✅ | Unique user identifier |
-| locale | string | ❌ | Language code (default: 'tr') |
-| subject | string | ❌ | Subject (e.g., 'mathematics', 'physics') |
-| grade_level | string | ❌ | Grade level (e.g., '8th grade') |
+| subject_id | integer | ❌ | Subject ID (get from /api/subjects) |
 
 ### Example Request
 ```bash
 curl -X POST http://localhost:3000/api/homework/solve \
+  -H "X-User-Id: user123" \
+  -H "X-Locale: tr" \
   -F "image=@homework.jpg" \
-  -F "user_id=user123" \
-  -F "locale=tr" \
-  -F "subject=mathematics" \
-  -F "grade_level=8th grade"
+  -F "subject_id=1"
 ```
 
 ### Success Response (200)
@@ -143,18 +153,26 @@ curl -X POST http://localhost:3000/api/homework/solve \
 Retrieves the homework submission history for a specific user.
 
 ### Request
-| Method | Endpoint | Parameters |
-|--------|----------|------------|
-| GET | `/homework/history` | user_id (query) |
+| Method | Endpoint |
+|--------|----------|
+| GET | `/homework/history` |
+
+### Headers
+| Header | Type | Required | Description |
+|--------|------|----------|-------------|
+| X-User-Id | string | ✅ | User identifier |
 
 ### Query Parameters
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| user_id | string | ✅ | User identifier |
+| subject_id | integer | ❌ | Filter by subject ID |
+| limit | number | ❌ | Max results (default: 50) |
+| group_by_subject | boolean | ❌ | Group results by subject |
 
 ### Example Request
 ```bash
-curl "http://localhost:3000/api/homework/history?user_id=user123"
+curl "http://localhost:3000/api/homework/history" \
+  -H "X-User-Id: user123"
 ```
 
 ### Success Response (200)
@@ -167,7 +185,6 @@ curl "http://localhost:3000/api/homework/history?user_id=user123"
       {
         "id": 123,
         "subject": "mathematics",
-        "grade_level": "8th grade",
         "status": "completed",
         "locale": "tr",
         "created_at": "2024-01-15T10:30:00Z",
@@ -180,7 +197,6 @@ curl "http://localhost:3000/api/homework/history?user_id=user123"
       {
         "id": 122,
         "subject": "physics",
-        "grade_level": "9th grade",
         "status": "completed",
         "locale": "tr",
         "created_at": "2024-01-14T15:20:00Z",
@@ -206,14 +222,22 @@ Retrieves detailed information about a specific homework submission.
 |--------|----------|------------|
 | GET | `/homework/submission/:id` | id (path) |
 
+### Headers
+| Header | Type | Required | Description |
+|--------|------|----------|-------------|
+| X-User-Id | string | ✅ | User identifier |
+
 ### Path Parameters
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | id | integer | ✅ | Submission ID |
 
+**Note**: This endpoint validates that the submission belongs to the requesting user.
+
 ### Example Request
 ```bash
-curl "http://localhost:3000/api/homework/submission/123"
+curl "http://localhost:3000/api/homework/submission/123" \
+  -H "X-User-Id: user123"
 ```
 
 ### Success Response (200)
@@ -225,7 +249,6 @@ curl "http://localhost:3000/api/homework/submission/123"
     "id": 123,
     "user_id": "user123",
     "subject": "mathematics",
-    "grade_level": "8th grade",
     "status": "completed",
     "locale": "tr",
     "image_url": "https://your-storage.supabase.co/...",
@@ -265,18 +288,19 @@ curl "http://localhost:3000/api/homework/submission/123"
 Retrieves homework statistics for a specific user.
 
 ### Request
-| Method | Endpoint | Parameters |
-|--------|----------|------------|
-| GET | `/homework/stats` | user_id (query) |
+| Method | Endpoint |
+|--------|----------|
+| GET | `/homework/stats` |
 
-### Query Parameters
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| user_id | string | ✅ | User identifier |
+### Headers
+| Header | Type | Required | Description |
+|--------|------|----------|-------------|
+| X-User-Id | string | ✅ | User identifier |
 
 ### Example Request
 ```bash
-curl "http://localhost:3000/api/homework/stats?user_id=user123"
+curl "http://localhost:3000/api/homework/stats" \
+  -H "X-User-Id: user123"
 ```
 
 ### Success Response (200)
@@ -310,6 +334,23 @@ curl "http://localhost:3000/api/homework/stats?user_id=user123"
 
 ---
 
+## 📚 Subjects Endpoints
+
+### Get All Subjects
+**GET** `/api/subjects`
+
+Returns all available subjects for homework solving.
+
+**Query Parameters:**
+- `locale` (optional): Language preference ('tr' or 'en')
+
+**Example:**
+```bash
+curl "http://localhost:3000/api/subjects?locale=tr"
+```
+
+---
+
 ## 💬 Chat Endpoints
 
 The API also includes a chat system for educational assistance.
@@ -323,6 +364,8 @@ The API also includes a chat system for educational assistance.
 | POST | `/chat/conversations` | Create new conversation |
 | DELETE | `/chat/conversations/:id` | Delete conversation |
 
+**Note**: All chat endpoints also require the `X-User-Id` header.
+
 ---
 
 ## Error Responses ❌
@@ -334,6 +377,14 @@ All endpoints may return these error responses:
 {
   "success": false,
   "message": "User ID is required"
+}
+```
+
+### 401 Unauthorized
+```json
+{
+  "success": false,
+  "message": "User ID is required in headers"
 }
 ```
 
@@ -387,18 +438,19 @@ class HomeworkService {
     required File imageFile,
     required String userId,
     String locale = 'tr',
-    String? subject,
-    String? gradeLevel,
+    int? subjectId,
   }) async {
     var request = http.MultipartRequest(
       'POST',
       Uri.parse('$baseUrl/homework/solve'),
     );
     
-    request.fields['user_id'] = userId;
+    // Add user ID to headers
+    request.headers['X-User-Id'] = userId;
+    
+    // Add form fields
     request.fields['locale'] = locale;
-    if (subject != null) request.fields['subject'] = subject;
-    if (gradeLevel != null) request.fields['grade_level'] = gradeLevel;
+    if (subjectId != null) request.fields['subject_id'] = subjectId.toString();
     
     request.files.add(
       await http.MultipartFile.fromPath('image', imageFile.path),
@@ -411,7 +463,8 @@ class HomeworkService {
   
   Future<Map<String, dynamic>> getHistory(String userId) async {
     final response = await http.get(
-      Uri.parse('$baseUrl/homework/history?user_id=$userId'),
+      Uri.parse('$baseUrl/homework/history'),
+      headers: {'X-User-Id': userId},
     );
     return jsonDecode(response.body);
   }
@@ -427,9 +480,8 @@ class HomeworkService {
 |--------|------|-------------|
 | id | SERIAL | Primary key |
 | user_id | VARCHAR(100) | User identifier |
-| subject | VARCHAR(50) | Subject name |
-| grade_level | VARCHAR(20) | Grade level |
-| image_id | INTEGER | Reference to image_uploads |
+| subject_id | INTEGER | Reference to subjects table |
+| image_id | INTEGER | Reference to homework_image_uploads |
 | locale | VARCHAR(10) | Language code |
 | status | VARCHAR(20) | Processing status |
 | created_at | TIMESTAMP | Submission time |
@@ -443,6 +495,15 @@ class HomeworkService {
 | steps | JSONB | Step-by-step solution |
 | confidence_score | DECIMAL | AI confidence (0-1) |
 | methodology | VARCHAR(100) | Solution approach |
+
+### subjects
+| Column | Type | Description |
+|--------|------|-------------|
+| id | SERIAL | Primary key |
+| name | VARCHAR(100) | Subject name |
+| description | TEXT | Subject description |
+| icon | VARCHAR(50) | Icon identifier |
+| locale | VARCHAR(10) | Language code |
 
 ---
 

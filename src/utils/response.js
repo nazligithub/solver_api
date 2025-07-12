@@ -32,6 +32,14 @@ const asyncHandler = (fn) => {
 };
 
 const errorHandler = (err, req, res, next) => {
+  console.error(`💥 Error in request [${req.id || req.path}]:`, err.message);
+  
+  // If response was already sent, don't send another
+  if (res.headersSent) {
+    console.log('⚠️  Response already sent, skipping error response');
+    return next(err);
+  }
+  
   let error = { ...err };
   error.message = err.message;
 
@@ -59,9 +67,19 @@ const errorHandler = (err, req, res, next) => {
   res.status(statusCode).json(BaseResponse.error(message, data, statusCode));
 };
 
+const successResponse = (res, message, data = null, statusCode = 200) => {
+  return res.status(statusCode).json(BaseResponse.success(message, data, statusCode));
+};
+
+const errorResponse = (res, message, statusCode = 500, data = null) => {
+  return res.status(statusCode).json(BaseResponse.error(message, data, statusCode));
+};
+
 module.exports = {
   BaseResponse,
   ApiError,
   asyncHandler,
-  errorHandler
+  errorHandler,
+  successResponse,
+  errorResponse
 };
