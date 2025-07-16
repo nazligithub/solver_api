@@ -37,7 +37,7 @@ New endpoint added to fetch app data where id = 1 from the `apps` table.
   "data": {
     "app": {
       "id": 1,
-      "name": "Hair Style App",
+      "name": "Homework App",
       "status": true
     }
   }

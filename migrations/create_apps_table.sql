@@ -44,19 +44,19 @@ CREATE TRIGGER update_apps_updated_at BEFORE UPDATE ON apps
 -- Sample data for testing
 INSERT INTO apps (app_name, platform, bundle_id, package_name, version, min_version, update_url, release_notes, force_update, features) VALUES
 -- iOS App
-('Hair Style App', 'ios', 'com.company.hairstyle', NULL, '1.2.0', '1.0.0', 'https://apps.apple.com/app/id123456789', 
-'- New hair styles added\n- Performance improvements\n- Bug fixes', false, 
-'{"chat_enabled": true, "ai_analysis": true, "premium_styles": false}'::jsonb),
+('Homework App', 'ios', 'com.company.homework', NULL, '1.2.0', '1.0.0', 'https://apps.apple.com/app/id123456789', 
+'- New features added\n- Performance improvements\n- Bug fixes', false, 
+'{"chat_enabled": true, "ai_analysis": true, "premium_features": false}'::jsonb),
 
-('Hair Style App', 'ios', 'com.company.hairstyle', NULL, '1.1.0', '1.0.0', 'https://apps.apple.com/app/id123456789', 
+('Homework App', 'ios', 'com.company.homework', NULL, '1.1.0', '1.0.0', 'https://apps.apple.com/app/id123456789', 
 '- Fixed camera issues\n- Added new filters', false, 
-'{"chat_enabled": true, "ai_analysis": false, "premium_styles": false}'::jsonb),
+'{"chat_enabled": true, "ai_analysis": false, "premium_features": false}'::jsonb),
 
 -- Android App
-('Hair Style App', 'android', NULL, 'com.company.hairstyle', '1.2.0', '1.0.0', 'https://play.google.com/store/apps/details?id=com.company.hairstyle', 
-'- New hair styles added\n- Performance improvements\n- Bug fixes', false, 
-'{"chat_enabled": true, "ai_analysis": true, "premium_styles": false}'::jsonb),
+('Homework App', 'android', NULL, 'com.company.homework', '1.2.0', '1.0.0', 'https://play.google.com/store/apps/details?id=com.company.homework', 
+'- New features added\n- Performance improvements\n- Bug fixes', false, 
+'{"chat_enabled": true, "ai_analysis": true, "premium_features": false}'::jsonb),
 
-('Hair Style App', 'android', NULL, 'com.company.hairstyle', '1.1.0', '1.0.0', 'https://play.google.com/store/apps/details?id=com.company.hairstyle', 
+('Homework App', 'android', NULL, 'com.company.homework', '1.1.0', '1.0.0', 'https://play.google.com/store/apps/details?id=com.company.homework', 
 '- Fixed camera issues\n- Added new filters', false, 
-'{"chat_enabled": true, "ai_analysis": false, "premium_styles": false}'::jsonb);
+'{"chat_enabled": true, "ai_analysis": false, "premium_features": false}'::jsonb);

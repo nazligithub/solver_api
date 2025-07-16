@@ -266,9 +266,7 @@ const uploadFileToSupabase = async (file, bucketName = 'homework-images') => {
   // Log where the call is coming from
   const stack = new Error().stack;
   const caller = stack.split('\n')[2];
-  if (caller.includes('hairController')) {
-    console.log('📍 Called from hairController');
-  } else if (caller.includes('homeworkController')) {
+  if (caller.includes('homeworkController')) {
     console.log('📍 Called from homeworkController');
   } else {
     console.log('📍 Called from:', caller.trim());

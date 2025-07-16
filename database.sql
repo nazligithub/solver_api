@@ -6,9 +6,6 @@ DROP TABLE IF EXISTS homework_solutions CASCADE;
 DROP TABLE IF EXISTS homework_submissions CASCADE;
 DROP TABLE IF EXISTS homework_image_uploads CASCADE;
 DROP TABLE IF EXISTS subjects CASCADE;
-DROP TABLE IF EXISTS messages CASCADE;
-DROP TABLE IF EXISTS conversation_contexts CASCADE;
-DROP TABLE IF EXISTS conversations CASCADE;
 DROP TABLE IF EXISTS apps CASCADE;
 
 -- 1. Subjects Table
@@ -59,27 +56,7 @@ CREATE TABLE homework_solutions (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- 5. Conversations Table (for chat system)
-CREATE TABLE conversations (
-    id SERIAL PRIMARY KEY,
-    user_id VARCHAR(100) NOT NULL,
-    title VARCHAR(255) DEFAULT 'Yeni Sohbet',
-    last_message TEXT,
-    is_active BOOLEAN DEFAULT true,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- 6. Messages Table (for chat system)
-CREATE TABLE messages (
-    id SERIAL PRIMARY KEY,
-    conversation_id INTEGER REFERENCES conversations(id) ON DELETE CASCADE,
-    role VARCHAR(20) CHECK (role IN ('user', 'assistant', 'system')),
-    content TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- 7. Apps Table (for mobile app status)
+-- 5. Apps Table (for mobile app status)
 CREATE TABLE apps (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL UNIQUE,
@@ -96,10 +73,6 @@ CREATE INDEX idx_homework_submissions_subject_id ON homework_submissions(subject
 CREATE INDEX idx_homework_submissions_created_at ON homework_submissions(created_at);
 CREATE INDEX idx_homework_solutions_submission_id ON homework_solutions(submission_id);
 CREATE INDEX idx_subjects_name ON subjects(name);
-CREATE INDEX idx_conversations_user_id ON conversations(user_id);
-CREATE INDEX idx_conversations_updated_at ON conversations(updated_at);
-CREATE INDEX idx_messages_conversation_id ON messages(conversation_id);
-CREATE INDEX idx_messages_created_at ON messages(created_at);
 CREATE INDEX idx_apps_name ON apps(name);
 
 -- Insert default subjects (Global - English only)

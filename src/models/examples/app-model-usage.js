@@ -36,7 +36,7 @@ async function findAppExample() {
     console.log('App by ID:', appById);
     
     // Find by bundle ID or package name
-    const appByIdentifier = await App.findByIdentifier('com.company.hairstyle');
+    const appByIdentifier = await App.findByIdentifier('com.company.homework');
     console.log('App by identifier:', appByIdentifier);
   } catch (error) {
     console.error('Error:', error.message);
@@ -47,19 +47,19 @@ async function findAppExample() {
 async function createAppExample() {
   try {
     const newApp = await App.create({
-      app_name: 'Hair Style App',
+      app_name: 'Homework App',
       platform: 'ios',
-      bundle_id: 'com.company.hairstyle',
+      bundle_id: 'com.company.homework',
       version: '1.3.0',
       min_version: '1.0.0',
       build_number: 130,
       update_url: 'https://apps.apple.com/app/id123456789',
-      release_notes: '- New AI-powered hair analysis\n- 50+ new hair styles\n- Performance improvements',
+      release_notes: '- New AI-powered homework analysis\n- 50+ new features\n- Performance improvements',
       force_update: false,
       features: {
         chat_enabled: true,
         ai_analysis: true,
-        premium_styles: true,
+        premium_features: true,
         ar_preview: true
       }
     });
@@ -88,7 +88,7 @@ async function checkUpdateExample() {
   try {
     // Check if iOS app needs update
     const updateInfo = await App.checkUpdateRequired(
-      'com.company.hairstyle',
+      'com.company.homework',
       '1.1.0', // Current version on user's device
       'ios'
     );
@@ -108,10 +108,10 @@ async function checkUpdateExample() {
 // Example 6: Get latest version
 async function getLatestVersionExample() {
   try {
-    const latestIOS = await App.getLatestVersion('com.company.hairstyle', 'ios');
+    const latestIOS = await App.getLatestVersion('com.company.homework', 'ios');
     console.log('Latest iOS version:', latestIOS);
     
-    const latestAndroid = await App.getLatestVersion('com.company.hairstyle', 'android');
+    const latestAndroid = await App.getLatestVersion('com.company.homework', 'android');
     console.log('Latest Android version:', latestAndroid);
   } catch (error) {
     console.error('Error:', error.message);

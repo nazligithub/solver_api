@@ -8,5 +8,5 @@ CREATE TABLE IF NOT EXISTS public.apps (
 
 -- Insert test data with id = 1
 INSERT INTO public.apps (id, name, status) 
-VALUES (1, 'Hair Style App', true)
+VALUES (1, 'Homework App', true)
 ON CONFLICT (id) DO NOTHING;

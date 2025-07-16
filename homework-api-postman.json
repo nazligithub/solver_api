@@ -310,103 +310,75 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"message\": \"Merhaba, matematik konusunda yardım edebilir misin?\",\n  \"conversation_id\": 1\n}"
+              "raw": "{\n  \"message\": \"Merhaba, matematik konusunda yardım edebilir misin?\"\n}"
             },
             "url": {
-              "raw": "{{baseUrl}}/api/chat/send",
+              "raw": "{{baseUrl}}/api/chat/message",
               "host": ["{{baseUrl}}"],
-              "path": ["api", "chat", "send"]
+              "path": ["api", "chat", "message"]
             },
-            "description": "Send a message to the AI chat assistant"
-          }
-        },
-        {
-          "name": "Get Conversations",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "X-User-Id",
-                "value": "test-user-123",
-                "type": "text",
-                "description": "Required: User identifier"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/chat/conversations",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "chat", "conversations"]
-            },
-            "description": "Get all conversations for the authenticated user"
-          }
-        },
-        {
-          "name": "Get Conversation",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "X-User-Id",
-                "value": "test-user-123",
-                "type": "text",
-                "description": "Required: User identifier"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/chat/conversations/1",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "chat", "conversations", "1"]
-            },
-            "description": "Get messages from a specific conversation"
-          }
-        },
-        {
-          "name": "Create Conversation",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
+            "description": "Send a message to the AI chat assistant (stateless - no conversation history)"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "test-user-123"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"message\": \"2x + 5 = 15 denklemini çözer misin?\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/chat/message",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "chat", "message"]
+                }
               },
-              {
-                "key": "X-User-Id",
-                "value": "test-user-123",
-                "type": "text",
-                "description": "Required: User identifier"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"title\": \"Matematik Yardım\"\n}"
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"success\": true,\n  \"message\": \"Message sent successfully\",\n  \"data\": {\n    \"message\": \"Tabii ki! 2x + 5 = 15 denklemini adım adım çözelim:\\n\\n1. İlk önce 5'i sağ tarafa geçirelim:\\n   2x + 5 - 5 = 15 - 5\\n   2x = 10\\n\\n2. Şimdi her iki tarafı 2'ye bölelim:\\n   2x ÷ 2 = 10 ÷ 2\\n   x = 5\\n\\nCevap: x = 5\",\n    \"userId\": \"test-user-123\"\n  }\n}"
             },
-            "url": {
-              "raw": "{{baseUrl}}/api/chat/conversations",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "chat", "conversations"]
-            },
-            "description": "Create a new conversation"
-          }
-        },
-        {
-          "name": "Delete Conversation",
-          "request": {
-            "method": "DELETE",
-            "header": [
-              {
-                "key": "X-User-Id",
-                "value": "test-user-123",
-                "type": "text",
-                "description": "Required: User identifier"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/chat/conversations/1",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "chat", "conversations", "1"]
-            },
-            "description": "Delete a conversation"
-          }
+            {
+              "name": "Non-Homework Question Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "X-User-Id",
+                    "value": "test-user-123"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"message\": \"Bugün hava nasıl?\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/chat/message",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["api", "chat", "message"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": "{\n  \"success\": true,\n  \"message\": \"Message sent successfully\",\n  \"data\": {\n    \"message\": \"Üzgünüm, ben sadece ödev ve eğitim konularında yardım edebilirim. Matematik, fizik, kimya, biyoloji gibi akademik konularda size yardımcı olabilirim. Lütfen ödevle ilgili bir soru sorun.\",\n    \"userId\": \"test-user-123\"\n  }\n}"
+            }
+          ]
         }
       ]
     },

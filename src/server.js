@@ -9,7 +9,6 @@ const homeworkRoutes = require('./routes/homeworkRoutes');
 const subjectsRoutes = require('./routes/subjectsRoutes');
 const chatRoutes = require('./routes/chatRoutes');
 const appStatusRoutes = require('./routes/appStatusRoutes');
-const hairRoutes = require('./routes/hairRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -40,7 +39,6 @@ app.use('/api/homework', homeworkRoutes);
 app.use('/api/subjects', subjectsRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/app', appStatusRoutes);
-app.use('/api/hair', hairRoutes);
 console.log('✅ Routes loaded');
 
 app.use((req, res) => {

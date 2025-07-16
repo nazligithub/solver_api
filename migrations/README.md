@@ -1,45 +1,39 @@
 # Database Migrations
 
-## Add Order Column Migration
+This folder contains database migration files for the homework API project.
 
-This migration adds the `order` column to `hair_styles` and `hair_colors` tables to support drag-and-drop sorting functionality.
+## Available Migrations
 
-### How to Apply the Migration
+### Apps Table Migration
+- `create_apps_table.sql` - Creates the apps table for managing mobile app versions
+- `create_simple_apps_table.sql` - Creates a simple apps table for basic app status tracking
+
+### How to Apply Migrations
 
 #### Option 1: Supabase SQL Editor (Recommended)
 1. Go to your Supabase project dashboard
 2. Navigate to SQL Editor
-3. Copy the contents of `add_order_column.sql`
+3. Copy the contents of the migration file you want to apply
 4. Paste and run the SQL commands
 
 #### Option 2: Using Supabase CLI
 ```bash
-supabase db push --file migrations/add_order_column.sql
+supabase db push --file migrations/[migration_file].sql
 ```
 
 #### Option 3: Using psql
 ```bash
-psql YOUR_DATABASE_URL < migrations/add_order_column.sql
+psql YOUR_DATABASE_URL < migrations/[migration_file].sql
 ```
 
-### What This Migration Does
-- Adds `order` column to `hair_styles` table
-- Adds `order` column to `hair_colors` table
-- Creates indexes for better query performance
-- Sets initial order values based on existing IDs
+### Migration Order
+Apply migrations in the following order:
+1. `create_apps_table.sql` or `create_simple_apps_table.sql` (choose one based on your needs)
+2. Other migrations as needed
 
 ### Verification
-After running the migration, verify it worked by checking if the order column exists:
+After running migrations, verify they worked by checking if the tables exist:
 ```sql
-SELECT column_name FROM information_schema.columns 
-WHERE table_name = 'hair_styles' AND column_name = 'order';
-```
-
-### Rollback
-If you need to rollback this migration:
-```sql
-ALTER TABLE hair_styles DROP COLUMN IF EXISTS "order";
-ALTER TABLE hair_colors DROP COLUMN IF EXISTS "order";
-DROP INDEX IF EXISTS idx_hair_styles_order;
-DROP INDEX IF EXISTS idx_hair_colors_order;
+SELECT table_name FROM information_schema.tables 
+WHERE table_schema = 'public' AND table_name = 'apps';
 ```

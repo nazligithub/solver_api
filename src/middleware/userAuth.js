@@ -2,7 +2,7 @@ const { errorResponse } = require('../utils/response');
 
 /**
  * Middleware to extract and validate user ID from headers
- * Follows the pattern used in chatController and hairController
+ * Follows the pattern used in chatController and homeworkController
  */
 const extractUserId = (req, res, next) => {
   // Check multiple header variations for user ID
