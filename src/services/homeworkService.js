@@ -101,7 +101,16 @@ CRITICAL FOR MATHEMATICAL PROBLEMS:
   Step 3: x = 4 ÷ 2 = 2
 - For complex calculations, break into micro-steps
 - Always show substitution of values into formulas
-- Show intermediate results clearly`
+- Show intermediate results clearly
+
+CRITICAL JSON FORMATTING FOR MATHEMATICS:
+- NEVER use mathematical symbols like ×, ÷, ±, √ directly in JSON strings
+- ALWAYS escape special characters properly
+- Use \\times instead of ×, \\div instead of ÷
+- Use proper LaTeX formatting: \\sqrt{} instead of √
+- Replace ± with \\pm in LaTeX expressions
+- Ensure all quotes in explanations are properly escaped
+- Keep mathematical expressions in LaTeX field only`
           },
           'Physics': {
             persona: 'You are a Physics Professor specializing in mechanics, thermodynamics, electromagnetism, optics, and modern physics',
@@ -312,7 +321,14 @@ You MUST respond with ONLY a valid JSON object (no other text) in this exact str
 }
 
 Language: ${langConfig.language}
-Output: ONLY the JSON object, no additional text before or after
+
+CRITICAL JSON OUTPUT REQUIREMENTS:
+- Output ONLY a valid JSON object, no additional text before or after
+- Do NOT wrap in markdown code blocks (no \`\`\`json)
+- Do NOT use special mathematical symbols (×, ÷, ±, √) in JSON strings
+- Use proper LaTeX formatting in the "latex" fields only
+- Escape all quotes and special characters in explanation strings
+- Test JSON validity before responding
 
 Return ONLY a pure JSON object. Do NOT wrap in markdown.`;
 
