@@ -10,7 +10,7 @@ class HomeworkService {
   async solveHomework(imageBuffer, imageUrl, locale = 'tr', subjectId = null) {
     try {
       console.log('🤖 AI: Processing start');
-      const model = this.genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+      const model = this.genAI.getGenerativeModel({ model: 'gemini-2.5-flash', generationConfig: { responseMimeType: 'application/json' } });
       
       const base64ImageData = imageBuffer.toString('base64');
       
@@ -312,7 +312,9 @@ You MUST respond with ONLY a valid JSON object (no other text) in this exact str
 }
 
 Language: ${langConfig.language}
-Output: ONLY the JSON object, no additional text before or after`;
+Output: ONLY the JSON object, no additional text before or after
+
+Return ONLY a pure JSON object. Do NOT wrap in markdown.`;
 
       console.log('🚀 AI: Calling Gemini');
       const aiCallStart = Date.now();
