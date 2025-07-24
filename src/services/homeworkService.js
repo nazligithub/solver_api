@@ -199,34 +199,79 @@ CRITICAL FOR PHYSICS CALCULATIONS:
 
 ${expertise}
 
-Analyze the image and solve the homework problem shown. ${langConfig.instructions}.
+${mathInstructions}
 
-SOLUTION APPROACH:
+🎯 TASK: Analyze the image and solve the homework problem shown. ${langConfig.instructions}.
 
-1) If the question is NUMERICAL (Math, Physics, Chemistry, Economics, etc.):
-   • List the given data and what is required.  
-   • Pick the correct formulas/laws and EXPLAIN why they apply.  
-   • Show every calculation line (with units).  
-   • If multiple methods exist, pick one elegant path and mention the alternative in one sentence.  
-   • Highlight common mistakes in a short "⚠️ Watch out" note.  
-   • Finish with **Answer: <result + units>** in bold.
+📋 SOLUTION APPROACH:
 
-2) If the question is VERBAL/THEORETICAL (History, Literature, Biology theory, etc.):
-   • Start with a 1‑sentence overview of the topic.  
-   • Break the explanation into clear bullet points or numbered steps (max 7).  
-   • Include ONE short real‑world example or analogy.  
-   • End with a 2‑line summary (key takeaway).
+1) 🔢 If the question is NUMERICAL (Math, Physics, Chemistry, Economics, etc.):
+   
+   📊 **FORMAT REQUIREMENTS:**
+   • Use tables for organizing data when dealing with multiple values
+   • Show EVERY single calculation step with actual numbers
+   • Include units in EVERY calculation step
+   • Use emojis to highlight important steps: ⚠️ for warnings, 💡 for key insights, ✅ for correct results
+   • Format complex calculations in clear, numbered steps
+   • Show substitution of actual values into formulas step by step
+   
+   📝 **STEP-BY-STEP PROCESS:**
+   • 📋 List ALL given data in a table format if multiple values exist
+   • 🎯 Clearly state what needs to be found
+   • 📐 Choose appropriate formulas and explain WHY they apply
+   • 🔢 Show numerical substitution: F = ma → F = 5kg × 2m/s² = 10N
+   • 🧮 Break complex calculations into micro-steps with intermediate results
+   • ⚠️ Add warning notes for common mistakes
+   • ✅ Final answer in bold with proper units
+   
+   📊 **CALCULATION FORMAT EXAMPLE:**
+   | Given Data | Value | Unit |
+   |------------|--------|------|
+   | Mass (m)   | 5      | kg   |
+   | Acceleration (a) | 2 | m/s² |
+   
+   💡 **Step-by-step calculation:**
+   - Formula: F = ma
+   - Substitution: F = 5 kg × 2 m/s²
+   - Calculation: F = 10 kg⋅m/s²
+   - ✅ **Final Answer: F = 10 N**
 
-3) Language:
-   • Detect the question language; answer in the SAME language.  
-   • Be concise but never skip logical steps.  
-   • Use Markdown formatting: equations with LaTeX \\( … \\), bold headings, bullet lists.
+2) 📚 If the question is VERBAL/THEORETICAL (History, Literature, Biology theory, etc.):
+   
+   📝 **FORMAT REQUIREMENTS:**
+   • Use emojis to categorize information: 📖 for definitions, 🏛️ for historical context, 🔬 for scientific processes
+   • Create tables for comparisons, timelines, or categorized information
+   • Use bullet points with emojis for better visual organization
+   • Include relevant examples with 💡 emoji
+   
+   📋 **STRUCTURED APPROACH:**
+   • 🎯 Start with a clear topic overview (1-2 sentences)
+   • 📊 Use tables for organizing complex information:
+   
+   | Aspect | Details | Example |
+   |---------|---------|---------|
+   | Concept | Definition | Real-world case |
+   
+   • 📝 Break explanation into clear sections with emojis:
+     - 📖 **Definition/Background**
+     - 🔍 **Analysis/Process** 
+     - 💡 **Key Examples**
+     - 🎯 **Conclusion/Summary**
+   
+   • ⚠️ Add important notes or common misconceptions
+   • ✅ End with key takeaways
 
-4) Output layout (always):
-   Step 1 – Understand the Problem
-   Step 2 – Plan
-   Step 3 – Solve
-   Step 4 – Check & Conclude
+3) 🌐 **Language & Formatting:**
+   • Detect question language and respond in the SAME language
+   • Use rich Markdown formatting: tables, bold headings, bullet lists
+   • LaTeX for math: \\( x = \\frac{-b \\pm \\sqrt{b^2-4ac}}{2a} \\)
+   • Emojis for better visual appeal and categorization
+
+4) 📐 **Output Structure (ALWAYS follow this):**
+   🔍 **Step 1 – Understand the Problem**
+   📋 **Step 2 – Plan & Organize**  
+   🧮 **Step 3 – Solve Step-by-Step**
+   ✅ **Step 4 – Verify & Conclude**
 
 You MUST respond with ONLY a valid JSON object (no other text) in this exact structure:
 {
@@ -237,31 +282,31 @@ You MUST respond with ONLY a valid JSON object (no other text) in this exact str
   "steps": [
     {
       "step_number": 1,
-      "title": "Step 1 – Understand the Problem",
-      "explanation": "List given data and what is required",
+      "title": "🔍 Step 1 – Understand the Problem",
+      "explanation": "📋 List ALL given data (use tables for multiple values). 🎯 Clearly state what needs to be found. Use emojis for better organization.",
       "latex": "Mathematical expressions in LaTeX format if applicable",
-      "visual_aid": "Any helpful diagram description or null"
+      "visual_aid": "Any helpful diagram description or data table"
     },
     {
       "step_number": 2,
-      "title": "Step 2 – Plan",
-      "explanation": "Choose formulas/methods and explain why they apply",
-      "latex": "Relevant formulas in LaTeX",
-      "visual_aid": "Any helpful diagram description or null"
+      "title": "📋 Step 2 – Plan & Organize",
+      "explanation": "📐 Choose appropriate formulas/methods and explain WHY they apply. 💡 Show the logical reasoning behind the approach. Include relevant formulas with LaTeX.",
+      "latex": "Relevant formulas in LaTeX format",
+      "visual_aid": "Formula explanations or conceptual diagrams"
     },
     {
       "step_number": 3,
-      "title": "Step 3 – Solve",
-      "explanation": "Show every calculation line with units. Include ⚠️ Watch out notes for common mistakes",
-      "latex": "Step-by-step calculations in LaTeX",
-      "visual_aid": "Any helpful diagram description or null"
+      "title": "🧮 Step 3 – Solve Step-by-Step",
+      "explanation": "🔢 Show EVERY numerical substitution and calculation step. 🧮 Break complex calculations into micro-steps. ⚠️ Include warning notes for common mistakes. Use tables for organizing complex calculations.",
+      "latex": "Detailed step-by-step calculations in LaTeX",
+      "visual_aid": "Calculation tables or step-by-step breakdown"
     },
     {
       "step_number": 4,
-      "title": "Step 4 – Check & Conclude",
-      "explanation": "Verify result and state final answer with **Answer: <result + units>** in bold",
-      "latex": "Final answer in LaTeX if applicable",
-      "visual_aid": "Any helpful diagram description or null"
+      "title": "✅ Step 4 – Verify & Conclude",
+      "explanation": "🔍 Verify the result makes sense (check units, magnitude, etc.). ✅ State final answer clearly with **Answer: <result + units>** in bold. 💡 Add any important insights or alternative methods.",
+      "latex": "Final answer verification in LaTeX if applicable",
+      "visual_aid": "Result verification or summary table"
     }
   ]
 }
