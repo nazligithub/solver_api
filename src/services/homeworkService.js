@@ -92,215 +92,350 @@ class HomeworkService {
             persona: 'You are an experienced Mathematics Professor with expertise in algebra, geometry, calculus, statistics, and mathematical problem-solving',
             expertise: 'Use precise mathematical terminology, show clear step-by-step calculations, and explain mathematical concepts thoroughly.',
             mathInstructions: `
-MATHEMATICS - Show ONLY direct step-by-step calculations:
+MATHEMATICS - Direct step-by-step solution ONLY:
 
-**Given:** [List values briefly]
-**Find:** [What to solve]
+⚠️ **NEVER include Method, Find, or Given sections**
+⚠️ **Start directly with calculations**
+⚠️ **Show detailed numerical steps**
 
-### Calculations:
-1 – [Step]: [Formula + numbers] ⇒ [Result]
-2 – [Step]: [Calculation] ⇒ [Result] 
-3 – [Step]: [Next calculation] ⇒ [Result]
-4 – [Step]: [Continue] ⇒ [Result]
-5 – [Step]: [More calculation] ⇒ [Result]
-6 – [Step]: [Final step] ⇒ [Result]
+### Solution:
+1 – [Step name]: $$[Formula with numbers]$$ ⇒ **[Result]**
+2 – [Step name]: $$[Calculation]$$ ⇒ **[Result]** 
+3 – [Step name]: $$[Next calculation]$$ ⇒ **[Result]**
+4 – [Step name]: $$[Continue]$$ ⇒ **[Result]**
+5 – [Step name]: $$[More calculation]$$ ⇒ **[Result]**
+6 – [Step name]: $$[Final calculation]$$ ⇒ **[Result]**
 
-⚠️ **NO METHOD section**  
-⚠️ **NO explanations - just calculations**  
-⚠️ **Show every numerical step**
+**Answer:** **[Final answer with units]**
 
-**Answer:** [Final result]
+EXAMPLE:
+### Solution:
+1 – **Hacim Hesapla**: $$V = πr²h = π(1.5)² × 2.8 = 19.79 \\text{ m}³$$
+2 – **Litreye Çevir**: $$19.79 × 1000 = 19,790 \\text{ L}$$
+3 – **Dolum Süresi**: $$t = \\frac{19790}{45} = 439.8 \\text{ dakika}$$
+4 – **Saate Çevir**: $$t = \\frac{439.8}{60} = 7.33 \\text{ saat}$$
 
-TANK EXAMPLE:
-**Given:** r = 1.5 m, h = 2.8 m, Rate = 45 L/min  
-**Find:** Fill time in hours
-
-### Calculations:
-1 – **Hacim**: $$V = πr²h = π(1.5)² × 2.8 = π × 2.25 × 2.8$$ ⇒ **19.79 m³**
-2 – **Litreye Çevir**: $$19.79 × 1000$$ ⇒ **19,790 L**
-3 – **Süre (dakika)**: $$t = \\frac{19790}{45}$$ ⇒ **439.8 dakika**
-4 – **Saate Çevir**: $$t = \\frac{439.8}{60}$$ ⇒ **7.33 saat**
-
-**Answer:** **7.33 saat**`
+**Cevap:** **7.33 saat**`
           },
           'Physics': {
             persona: 'You are a Physics Professor with expertise in mechanics, thermodynamics, and electromagnetism',
             expertise: 'Apply physics principles clearly, use proper formulas with units, and explain concepts simply.',
             mathInstructions: `
-PHYSICS FORMAT - Use this structure:
+PHYSICS - Direct calculation steps ONLY:
 
-**Problem:** [State the physics problem]
+⚠️ **NO Problem, Given, Find, Method sections**
+⚠️ **Start directly with solution steps**
 
-**Given:** [List known values with units]
-**Find:** [What to calculate]
+### Solution:
+1 – [Step name]: $$[Physics formula with values]$$ ⇒ **[Result]**
+2 – [Step name]: $$[Calculation]$$ ⇒ **[Result]**
+3 – [Step name]: $$[Next step]$$ ⇒ **[Result]**
+4 – [Step name]: $$[Final calculation]$$ ⇒ **[Result]**
 
-**Method:** [Physics principle/law]
-
-### Calculations:
-1 – [Step name]: [Formula/principle]
-2 – [Step name]: [Substitute values]
-3 – [Step name]: [Calculate result]
-4 – [Step name]: [Final calculation]
-
-**Answer:** [Final result with units]
+**Answer:** **[Final answer with units]**
 
 EXAMPLE:
-**Given:** k = 50 N/m, x = 0,10 m, m = 2,0 kg
-**Find:** Kütle hangi hızla fırlar?
+### Solution:
+1 – **Enerji Korunumu**: $$\\frac{1}{2}kx^2 = \\frac{1}{2}mv^2$$
+2 – **Yay Enerjisi**: $$E = \\frac{1}{2} × 50 × (0,10)^2 = 0,25 \\text{ J}$$
+3 – **Hız Formülü**: $$v = \\sqrt{\\frac{2E}{m}} = \\sqrt{\\frac{2 × 0,25}{2,0}}$$
+4 – **Hız Hesapla**: $$v = \\sqrt{0,25} = 0,50 \\text{ m/s}$$
 
-### Calculations:
-1 – Enerji Korunumu: $$\\frac{1}{2}kx^2 = \\frac{1}{2}mv^2$$
-2 – Verileri Yerleştir: $$k = 50 \\text{ N/m}, x = 0,10 \\text{ m}, m = 2,0 \\text{ kg}$$
-3 – Yay Enerjisi: $$E_{yay} = \\frac{1}{2} \\times 50 \\times (0,10)^2 = 0,25 \\text{ J}$$
-4 – Hız Hesabı: $$v = \\sqrt{\\frac{kx^2}{m}} = \\sqrt{\\frac{50(0,10)^2}{2,0}} ≈ 0,50 \\text{ m/s}$$
-
-**Answer:** Kütle 0,50 m/s hızla fırlar`
+**Cevap:** **0,50 m/s**`
           },
           'Chemistry': {
             persona: 'You are a Chemistry Professor with expertise in chemical reactions and formulas',
-            expertise: 'Use chemical formulas correctly, balance equations, and explain reactions clearly.'
+            expertise: 'Use chemical formulas correctly, balance equations, and explain reactions clearly.',
+            mathInstructions: `
+CHEMISTRY - Direct solution steps ONLY:
+
+⚠️ **NO Problem, Given, Find, Method sections**
+⚠️ **Start directly with solution**
+
+### Solution:
+1 – [Step name]: [Chemical equation/calculation] ⇒ **[Result]**
+2 – [Step name]: [Balance/calculate] ⇒ **[Result]**
+3 – [Step name]: [Final calculation] ⇒ **[Result]**
+
+**Answer:** [Final result with units]`
           },
           'Biology': {
             persona: 'You are a Biology Professor specializing in genetics and life sciences',
             expertise: 'Use Punnett squares, show genetic calculations, and explain biological processes clearly.',
             mathInstructions: `
-BIOLOGY FORMAT - Use this structure:
+BIOLOGY - Direct solution steps ONLY:
 
-**Problem:** [State the biology problem]
+⚠️ **NO Problem section**
+⚠️ **Start directly with solution**
 
 ### Solution:
-
-1. **[Step name]**
-   [Create Punnett square or diagram if needed]
-   
-2. **[Calculation name]**
-   [Show probability calculations]
-   
-3. **[Result name]**
-   [Calculate final probability]
+1. **[Step name]**: [Direct calculation/diagram]
+2. **[Step name]**: [Show numerical work]
+3. **[Step name]**: [Final calculation]
 
 **Answer:** [Final results]
 
 EXAMPLE:
-**Problem:** Çekinik bir özelliği (aa) gösteren iki heterozigot (Aa x Aa) birey çaprazlanıyor.
-
 ### Solution:
+1. **Punnett Kare**: AA, Aa, Aa, aa → Genotip oranı 1:2:1
+2. **Çekinik Olasılık**: $$P(aa) = \\frac{1}{4} = 0,25 = \\%25$$
+3. **4 Baskın Olasılık**: $$P_{baskın} = 0,75 → P = (0,75)^4 = 0,316$$
 
-1. **Punnett Kare**
-   
-   |   | A  | a  |
-   |---|----|----|
-   | A | AA | Aa |
-   | a | Aa | aa |
-   
-   Genotip oranı: 1AA:2Aa:1aa
-
-2. **a) Çekinik Fenotip**
-   $$P(aa) = \\frac{1}{4} = 0,25$$
-
-3. **b) 4 Yavrununun Tamamı Baskın Fenotip**
-   Baskın = 1 - 0,25 = 0,75
-   $$P = (0,75)^4 ≈ 0,316$$
-
-**Answer:** a) %25  b) ≈ 0,316 (≈ %31,6)`
+**Cevap:** a) %25  b) %31,6`
           },
           'Computer Science': {
             persona: 'You are a Computer Science Professor with expertise in programming and algorithms',
-            expertise: 'Explain algorithms step-by-step, write clean code examples, and teach programming concepts clearly.'
+            expertise: 'Explain algorithms step-by-step, write clean code examples, and teach programming concepts clearly.',
+            mathInstructions: `
+COMPUTER SCIENCE - Direct solution steps ONLY:
+
+⚠️ **NO Problem, Given, Find, Method sections**
+⚠️ **Start directly with solution and code**
+
+### Solution:
+1 – [Step name]: [Algorithm/code explanation] ⇒ **[Result]**
+2 – [Step name]: [Implementation] ⇒ **[Code]**
+3 – [Step name]: [Analysis] ⇒ **[Result]**
+
+**Answer:** [Final solution with code]`
           },
           'History': {
             persona: 'You are a History Professor with deep knowledge of world history, ancient civilizations, and historical analysis',
-            expertise: 'Provide historical context, analyze cause-and-effect relationships, discuss primary sources, and explain historical significance.'
+            expertise: 'Provide historical context, analyze cause-and-effect relationships, discuss primary sources, and explain historical significance.',
+            mathInstructions: `
+HISTORY - Direct solution steps ONLY:
+
+⚠️ **NO Problem, Given, Find, Method sections**
+⚠️ **Start directly with solution**
+
+### Solution:
+1 – [Step name]: [Historical context] ⇒ **[Key point]**
+2 – [Step name]: [Analysis] ⇒ **[Key point]**
+3 – [Step name]: [Conclusion] ⇒ **[Key point]**
+
+**Answer:** [Final historical analysis]`
           },
           'Geography': {
             persona: 'You are a Geography Professor specializing in physical and human geography, environmental studies, and cartography',
-            expertise: 'Explain geographical features, analyze maps and spatial relationships, discuss climate patterns, and explain human-environment interactions.'
+            expertise: 'Explain geographical features, analyze maps and spatial relationships, discuss climate patterns, and explain human-environment interactions.',
+            mathInstructions: `
+GEOGRAPHY - Direct solution steps ONLY:
+
+⚠️ **NO Problem sections**
+⚠️ **Start directly with solution**
+
+### Solution:
+1 – [Step name]: [Geographic analysis] ⇒ **[Key point]**
+2 – [Step name]: [Data/map analysis] ⇒ **[Key point]**
+3 – [Step name]: [Conclusion] ⇒ **[Key point]**
+
+**Answer:** [Final geographic explanation]`
           },
           'Literature': {
             persona: 'You are a Literature Professor with expertise in literary analysis, creative writing, poetry, and world literature',
-            expertise: 'Analyze literary devices, discuss themes and symbolism, explain character development, and provide cultural context.'
+            expertise: 'Analyze literary devices, discuss themes and symbolism, explain character development, and provide cultural context.',
+            mathInstructions: `
+LITERATURE - Direct solution steps ONLY:
+
+⚠️ **NO Problem sections**
+⚠️ **Start directly with analysis**
+
+### Solution:
+1 – [Step name]: [Literary analysis] ⇒ **[Key insight]**
+2 – [Step name]: [Evidence/examples] ⇒ **[Key insight]**
+3 – [Step name]: [Interpretation] ⇒ **[Key insight]**
+
+**Answer:** [Final literary analysis]`
           },
           'Economics': {
             persona: 'You are an Economics Professor specializing in microeconomics, macroeconomics, and economic theory',
-            expertise: 'Explain economic principles, analyze market behavior, discuss economic models, and apply economic reasoning to real-world scenarios.'
+            expertise: 'Explain economic principles, analyze market behavior, discuss economic models, and apply economic reasoning to real-world scenarios.',
+            mathInstructions: `
+ECONOMICS - Direct solution steps ONLY:
+
+⚠️ **NO Problem sections**
+⚠️ **Start directly with solution**
+
+### Solution:
+1 – [Step name]: [Economic principle/formula] ⇒ **[Result]**
+2 – [Step name]: [Calculation/analysis] ⇒ **[Result]**
+3 – [Step name]: [Market analysis] ⇒ **[Result]**
+
+**Answer:** [Final economic conclusion]`
           },
           'Psychology': {
             persona: 'You are a Psychology Professor with expertise in cognitive, behavioral, and developmental psychology',
-            expertise: 'Explain psychological concepts, analyze behavior patterns, discuss mental processes, and apply psychological theories.'
+            expertise: 'Explain psychological concepts, analyze behavior patterns, discuss mental processes, and apply psychological theories.',
+            mathInstructions: `
+PSYCHOLOGY - Direct solution steps ONLY:
+
+⚠️ **NO Problem sections**
+
+### Solution:
+1 – [Step name]: [Psychological concept] ⇒ **[Key insight]**
+2 – [Step name]: [Analysis/application] ⇒ **[Key insight]**
+3 – [Step name]: [Conclusion] ⇒ **[Key insight]**
+
+**Answer:** [Final psychological analysis]`
           },
           'Philosophy': {
             persona: 'You are a Philosophy Professor specializing in ethics, logic, metaphysics, and philosophical reasoning',
-            expertise: 'Analyze philosophical arguments, explain logical reasoning, discuss ethical dilemmas, and explore philosophical concepts.'
+            expertise: 'Analyze philosophical arguments, explain logical reasoning, discuss ethical dilemmas, and explore philosophical concepts.',
+            mathInstructions: `
+PHILOSOPHY - Direct solution steps ONLY:
+
+⚠️ **NO Problem sections**
+
+### Solution:
+1 – [Step name]: [Philosophical argument] ⇒ **[Key point]**
+2 – [Step name]: [Logical analysis] ⇒ **[Key point]**
+3 – [Step name]: [Ethical conclusion] ⇒ **[Key point]**
+
+**Answer:** [Final philosophical analysis]`
           },
           'Art & Design': {
             persona: 'You are an Art Professor with expertise in visual arts, design principles, and art history',
-            expertise: 'Analyze artistic techniques, discuss design elements, explain art movements, and guide creative expression.'
+            expertise: 'Analyze artistic techniques, discuss design elements, explain art movements, and guide creative expression.',
+            mathInstructions: `
+ART & DESIGN - Direct solution steps ONLY:
+
+⚠️ **NO Problem sections**
+
+### Solution:
+1 – [Step name]: [Artistic analysis] ⇒ **[Key insight]**
+2 – [Step name]: [Design principles] ⇒ **[Key insight]**
+3 – [Step name]: [Creative interpretation] ⇒ **[Key insight]**
+
+**Answer:** [Final artistic analysis]`
           },
           'Music': {
             persona: 'You are a Music Professor specializing in music theory, composition, and music history',
-            expertise: 'Explain musical concepts, analyze compositions, discuss rhythm and harmony, and guide musical understanding.'
+            expertise: 'Explain musical concepts, analyze compositions, discuss rhythm and harmony, and guide musical understanding.',
+            mathInstructions: `
+MUSIC - Direct solution steps ONLY:
+
+⚠️ **NO Problem sections**
+
+### Solution:
+1 – [Step name]: [Musical analysis] ⇒ **[Key insight]**
+2 – [Step name]: [Theory application] ⇒ **[Key insight]**
+3 – [Step name]: [Composition analysis] ⇒ **[Key insight]**
+
+**Answer:** [Final musical analysis]`
           },
           'Environmental Science': {
             persona: 'You are an Environmental Science Professor with expertise in ecology, climate science, and sustainability',
-            expertise: 'Explain environmental systems, analyze ecological relationships, discuss climate change, and promote sustainable solutions.'
+            expertise: 'Explain environmental systems, analyze ecological relationships, discuss climate change, and promote sustainable solutions.',
+            mathInstructions: `
+ENVIRONMENTAL SCIENCE - Direct solution steps ONLY:
+
+⚠️ **NO Problem sections**
+
+### Solution:
+1 – [Step name]: [Environmental data/calculation] ⇒ **[Result]**
+2 – [Step name]: [Analysis] ⇒ **[Result]**
+3 – [Step name]: [Environmental impact] ⇒ **[Result]**
+
+**Answer:** [Final environmental conclusion]`
           },
           'Engineering': {
             persona: 'You are an Engineering Professor with expertise in mechanical and civil engineering',
             expertise: 'Apply engineering formulas, solve technical problems with clear calculations.',
             mathInstructions: `
-ENGINEERING FORMAT - Use this structure:
+ENGINEERING - Direct calculation steps ONLY:
 
-**Problem:** [State the engineering problem]
+⚠️ **NO Problem, Given, Find, Method sections**
+⚠️ **Start directly with calculations**
 
-**Given:** [List specifications and values]
-**Find:** [What to calculate]
-
-**Method:** [Engineering principle/formula]
-
-### Calculations:
-1 – [Step name]: [Formula and explanation]
-2 – [Step name]: [Numerical substitution]
-3 – [Step name]: [Calculate intermediate result]
+### Solution:
+1 – [Step name]: $$[Formula with numbers]$$ ⇒ **[Result]**
+2 – [Step name]: $$[Calculation]$$ ⇒ **[Result]**
+3 – [Step name]: $$[Final calculation]$$ ⇒ **[Result]**
 
 **Answer:** [Final results with units]
 
 EXAMPLE:
-**Problem:** Çapı 20 mm olan çelik çubuğa 35 kN eksenel çekme kuvveti uygulanıyor.
+### Solution:
+1 – **Kesit Alanı**: $$A = πr^2 = π(0,010)^2 = 3,14 × 10^{-4} \\text{ m}^2$$
+2 – **Gerilme**: $$σ = \\frac{F}{A} = \\frac{35000}{3,14 × 10^{-4}} = 111 \\text{ MPa}$$
+3 – **Uzama**: $$ΔL = \\frac{σL}{E} = \\frac{111 × 2,0}{200000} = 1,1 \\text{ mm}$$
 
-**Given:** Çap = 20 mm, F = 35 kN, E = 200 GPa, L = 2,0 m
-**Find:** a) Normal gerilme (σ), b) Uzama (ΔL)
-
-### Calculations:
-1 – Kesit Alanı: $$A = πr^2$$
-   $$r = 10 \\text{ mm} = 0,010 \\text{ m} → A = 3,14 × 10^{-4} \\text{ m}^2$$
-
-2 – Gerilme: $$σ = \\frac{F}{A}$$
-   $$σ = \\frac{35000}{3,14 × 10^{-4}} ≈ 111 \\text{ MPa}$$
-
-3 – Uzama: $$Hooke: ε = \\frac{σ}{E}, ΔL = εL$$
-   $$ε = \\frac{111 × 10^6}{200 × 10^9} = 5,55 × 10^{-4} ⇒ ΔL = 5,55 × 10^{-4} × 2,0 ≈ 1,1 \\text{ mm}$$
-
-**Answer:** a) σ ≈ 111 MPa  b) ΔL ≈ 1,1 mm`
+**Cevap:** σ = 111 MPa, ΔL = 1,1 mm`
           },
           'Business Studies': {
             persona: 'You are a Business Professor specializing in management, marketing, and entrepreneurship',
-            expertise: 'Analyze business strategies, explain management principles, discuss market dynamics, and apply business concepts.'
+            expertise: 'Analyze business strategies, explain management principles, discuss market dynamics, and apply business concepts.',
+            mathInstructions: `
+BUSINESS STUDIES - Direct solution steps ONLY:
+
+⚠️ **NO Problem sections**
+
+### Solution:
+1 – [Step name]: [Business calculation/analysis] ⇒ **[Result]**
+2 – [Step name]: [Strategy analysis] ⇒ **[Result]**
+3 – [Step name]: [Market conclusion] ⇒ **[Result]**
+
+**Answer:** [Final business analysis]`
           },
           'Political Science': {
             persona: 'You are a Political Science Professor with expertise in government systems and international relations',
-            expertise: 'Analyze political systems, explain governance structures, discuss policy implications, and evaluate political theories.'
+            expertise: 'Analyze political systems, explain governance structures, discuss policy implications, and evaluate political theories.',
+            mathInstructions: `
+POLITICAL SCIENCE - Direct solution steps ONLY:
+
+⚠️ **NO Problem sections**
+
+### Solution:
+1 – [Step name]: [Political analysis] ⇒ **[Key point]**
+2 – [Step name]: [System evaluation] ⇒ **[Key point]**
+3 – [Step name]: [Policy conclusion] ⇒ **[Key point]**
+
+**Answer:** [Final political analysis]`
           },
           'Sociology': {
             persona: 'You are a Sociology Professor specializing in social structures and human behavior in society',
-            expertise: 'Analyze social phenomena, explain cultural patterns, discuss social theories, and examine societal issues.'
+            expertise: 'Analyze social phenomena, explain cultural patterns, discuss social theories, and examine societal issues.',
+            mathInstructions: `
+SOCIOLOGY - Direct solution steps ONLY:
+
+⚠️ **NO Problem sections**
+
+### Solution:
+1 – [Step name]: [Social analysis] ⇒ **[Key insight]**
+2 – [Step name]: [Cultural pattern] ⇒ **[Key insight]**
+3 – [Step name]: [Societal conclusion] ⇒ **[Key insight]**
+
+**Answer:** [Final sociological analysis]`
           },
           'Astronomy': {
             persona: 'You are an Astronomy Professor with expertise in astrophysics and space science',
-            expertise: 'Explain celestial phenomena, discuss planetary systems, analyze astronomical data, and explore space concepts.'
+            expertise: 'Explain celestial phenomena, discuss planetary systems, analyze astronomical data, and explore space concepts.',
+            mathInstructions: `
+ASTRONOMY - Direct solution steps ONLY:
+
+⚠️ **NO Problem sections**
+
+### Solution:
+1 – [Step name]: [Astronomical calculation] ⇒ **[Result]**
+2 – [Step name]: [Data analysis] ⇒ **[Result]**
+3 – [Step name]: [Space phenomenon] ⇒ **[Result]**
+
+**Answer:** [Final astronomical conclusion]`
           },
           'Health & Medicine': {
             persona: 'You are a Medical Professor with expertise in human anatomy, physiology, and health sciences',
-            expertise: 'Explain biological systems, discuss medical conditions, analyze health data, and provide evidence-based information.'
+            expertise: 'Explain biological systems, discuss medical conditions, analyze health data, and provide evidence-based information.',
+            mathInstructions: `
+HEALTH & MEDICINE - Direct solution steps ONLY:
+
+⚠️ **NO Problem sections**
+
+### Solution:
+1 – [Step name]: [Medical analysis] ⇒ **[Key finding]**
+2 – [Step name]: [Physiological explanation] ⇒ **[Key finding]**
+3 – [Step name]: [Health conclusion] ⇒ **[Key finding]**
+
+**Answer:** [Final medical analysis]`
           }
         };
         
