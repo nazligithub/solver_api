@@ -112,27 +112,26 @@ CRITICAL MARKDOWN FORMATTING FOR MATHEMATICS:
 - Use bold **text** for emphasis and final answers`
           },
           'Physics': {
-            persona: 'You are a Physics Professor specializing in mechanics, thermodynamics, electromagnetism, optics, and modern physics',
-            expertise: 'Apply physics principles, use proper formulas with units, draw force diagrams when needed, and explain physical phenomena clearly.',
+            persona: 'You are a Physics Professor with expertise in mechanics, thermodynamics, and electromagnetism',
+            expertise: 'Apply physics principles clearly, use proper formulas with units, and explain concepts simply.',
             mathInstructions: `
-CRITICAL FOR PHYSICS CALCULATIONS:
-- Show ALL numerical substitutions into formulas
-- Include units in every calculation step
-- Example: F = ma → F = 5kg × 2m/s² = 10N
-- Break complex formulas into component calculations
-- Show unit conversions step by step`
+PHYSICS CALCULATIONS:
+- Show numerical substitutions clearly
+- Include units in calculations
+- Keep explanations concise
+- Focus on key physics concepts`
           },
           'Chemistry': {
-            persona: 'You are a Chemistry Professor with expertise in organic, inorganic, and physical chemistry',
-            expertise: 'Use chemical formulas correctly, balance equations, explain chemical reactions and molecular structures, and discuss chemical properties.'
+            persona: 'You are a Chemistry Professor with expertise in chemical reactions and formulas',
+            expertise: 'Use chemical formulas correctly, balance equations, and explain reactions clearly.'
           },
           'Biology': {
-            persona: 'You are a Biology Professor specializing in cell biology, genetics, ecology, evolution, and life sciences',
-            expertise: 'Explain biological processes in detail, use scientific terminology, discuss cellular mechanisms, and relate concepts to real-world examples.'
+            persona: 'You are a Biology Professor specializing in life sciences',
+            expertise: 'Explain biological processes clearly and relate concepts to real examples.'
           },
           'Computer Science': {
-            persona: 'You are a Computer Science Professor with expertise in algorithms, data structures, programming, and computational thinking',
-            expertise: 'Explain algorithms step-by-step, write clean code examples, discuss time complexity, and teach programming concepts clearly.'
+            persona: 'You are a Computer Science Professor with expertise in programming and algorithms',
+            expertise: 'Explain algorithms step-by-step, write clean code examples, and teach programming concepts clearly.'
           },
           'History': {
             persona: 'You are a History Professor with deep knowledge of world history, ancient civilizations, and historical analysis',
@@ -216,64 +215,50 @@ ${mathInstructions}
 1) 🔢 If the question is NUMERICAL (Math, Physics, Chemistry, Economics, etc.):
    
    📊 **FORMAT REQUIREMENTS:**
-   • Use tables for organizing data when dealing with multiple values
-   • Show EVERY single calculation step with actual numbers
-   • Include units in EVERY calculation step
-   • Use emojis to highlight important steps: ⚠️ for warnings, 💡 for key insights, ✅ for correct results
-   • Format complex calculations in clear, numbered steps
-   • Show substitution of actual values into formulas step by step
+   • Keep solutions concise but complete
+   • Show key calculation steps with actual numbers
+   • Include units in final results
+   • Use minimal emojis: ⚠️ for warnings, ✅ for results
+   • Number steps clearly: 1), 2), 3)...
+   • Show formula → substitution → result
    
    📝 **STEP-BY-STEP PROCESS:**
-   • 📋 List ALL given data in a table format if multiple values exist
-   • 🎯 Clearly state what needs to be found
-   • 📐 Choose appropriate formulas and explain WHY they apply
-   • 🔢 Show numerical substitution: F = ma → F = 5kg × 2m/s² = 10N
-   • 🧮 Break complex calculations into micro-steps with intermediate results
-   • ⚠️ Add warning notes for common mistakes
-   • ✅ Final answer in bold with proper units
+   • State given values briefly (table only if 5+ values)
+   • Identify what to find
+   • Choose formula with brief reason
+   • Show calculations step by step
+   • Highlight final answer
    
-   📊 **CALCULATION FORMAT EXAMPLE:**
-   | Given Data | Value | Unit |
-   |------------|--------|------|
-   | Mass (m)   | 5      | kg   |
-   | Acceleration (a) | 2 | m/s² |
+   Example format:
+   Given: m = 5 kg, a = 2 m/s²
+   Find: Force (F)
    
-   💡 **Step-by-step calculation:**
-   - Formula: F = ma
-   - Substitution: F = 5 kg × 2 m/s²
-   - Calculation: F = 10 kg⋅m/s²
-   - ✅ **Final Answer: F = 10 N**
+   Solution:
+   1) F = ma
+   2) F = 5 × 2 = 10 N
+   
+   ✅ **Answer: 10 N**
 
 2) 📚 If the question is VERBAL/THEORETICAL (History, Literature, Biology theory, etc.):
    
    📝 **FORMAT REQUIREMENTS:**
-   • Use emojis to categorize information: 📖 for definitions, 🏛️ for historical context, 🔬 for scientific processes
-   • Create tables for comparisons, timelines, or categorized information
-   • Use bullet points with emojis for better visual organization
-   • Include relevant examples with 💡 emoji
+   • Use clear headings and bullet points
+   • Organize information logically
+   • Include relevant examples
+   • Keep explanations concise
    
    📋 **STRUCTURED APPROACH:**
-   • 🎯 Start with a clear topic overview (1-2 sentences)
-   • 📊 Use tables for organizing complex information:
-   
-   | Aspect | Details | Example |
-   |---------|---------|---------|
-   | Concept | Definition | Real-world case |
-   
-   • 📝 Break explanation into clear sections with emojis:
-     - 📖 **Definition/Background**
-     - 🔍 **Analysis/Process** 
-     - 💡 **Key Examples**
-     - 🎯 **Conclusion/Summary**
-   
-   • ⚠️ Add important notes or common misconceptions
-   • ✅ End with key takeaways
+   • Start with a brief overview
+   • Break into logical sections
+   • Use bullet points for clarity
+   • Highlight key points with **bold**
+   • End with main takeaways
 
 3) 🌐 **Language & Formatting:**
    • Detect question language and respond in the SAME language
-   • Use rich Markdown formatting: tables, bold headings, bullet lists
-   • LaTeX for math: \\( x = \\frac{-b \\pm \\sqrt{b^2-4ac}}{2a} \\)
-   • Emojis for better visual appeal and categorization
+   • Use clean Markdown: bold headings, bullet lists
+   • LaTeX for math: $$x = \\frac{-b \\pm \\sqrt{b^2-4ac}}{2a}$$
+   • Minimal emoji use
 
 4) 📐 **Output Structure (ALWAYS follow this):**
    🔍 **Step 1 – Understand the Problem**
@@ -281,46 +266,33 @@ ${mathInstructions}
    🧮 **Step 3 – Solve Step-by-Step**
    ✅ **Step 4 – Verify & Conclude**
 
-Respond in rich Markdown format with the following structure:
+Respond in clear, concise Markdown format:
 
-## 🔍 Step 1 – Understand the Problem
+## 📝 Problem
+[State the problem briefly]
 
-📋 **Given Data:**
-[Create a table if multiple values, use emojis for organization]
+## 🧮 Solution
 
-🎯 **Find:** [What needs to be solved]
+**Given:** [List key values - use table ONLY if many values]
+**Find:** [What to solve]
 
----
+**Method:** [Brief approach]
 
-## 📋 Step 2 – Plan & Organize  
+### Calculations:
+[Show step-by-step work clearly]
+- Use $$LaTeX$$ for math
+- Number each step
+- Show: Step → Calculation → Result
+- Highlight important parts with **bold** or ⚠️
 
-📐 **Method:** [Solution approach]
+### Answer:
+✅ **[Final result with units]**
 
-💡 **Formulas:**
-$$LaTeX formulas here$$
-
----
-
-## 🧮 Step 3 – Solve Step-by-Step
-
-🔢 **Calculations:**
-[Show EVERY numerical step with tables, emojis, detailed breakdown]
-
-⚠️ **Important Notes:** [Common mistakes to avoid]
-
----
-
-## ✅ Step 4 – Verify & Conclude
-
-🔍 **Verification:** [Check units, magnitude, reasonableness]
-
-✅ **Final Answer:** **[Result with units]**
-
-💡 **Key Insights:** [Additional notes or alternative methods]
+💡 **Note:** [Only if there's an important tip]
 
 Language: ${langConfig.language}
 
-Use rich Markdown formatting with tables, emojis, LaTeX math, and detailed visual organization.`;
+Be CONCISE. NO TABLES. Focus on clear step-by-step calculations.`;
 
       console.log('🚀 AI: Calling Gemini');
       const aiCallStart = Date.now();
@@ -348,15 +320,15 @@ Use rich Markdown formatting with tables, emojis, LaTeX math, and detailed visua
       console.log('✨ AI: Processing Markdown solution');
       
       // Extract problem statement from the content
-      const problemMatch = text.match(/## 🔍 Step 1[^#]+?🎯 \*\*Find:\*\* (.+?)(?=\n|$)/);
+      const problemMatch = text.match(/## 📝 Problem\s*\n(.+?)(?=\n|$)/);
       const problemStatement = problemMatch ? problemMatch[1].trim() : 'Problem identified from image';
       
       // Extract final answer
-      const answerMatch = text.match(/✅ \*\*Final Answer:\*\* \*\*(.+?)\*\*/);
+      const answerMatch = text.match(/✅ \*\*(.+?)\*\*/);
       const solution = answerMatch ? answerMatch[1].trim() : 'Solution completed';
       
       // Extract methodology from the method section
-      const methodMatch = text.match(/📐 \*\*Method:\*\* (.+?)(?=\n|$)/);
+      const methodMatch = text.match(/\*\*Method:\*\* (.+?)(?=\n|$)/);
       const methodology = methodMatch ? methodMatch[1].toLowerCase().trim() : 'general';
       
       // Create structured response with Markdown content
@@ -368,29 +340,15 @@ Use rich Markdown formatting with tables, emojis, LaTeX math, and detailed visua
         steps: [
           {
             step_number: 1,
-            title: '🔍 Step 1 – Understand the Problem',
-            explanation: text.match(/## 🔍 Step 1[^#]+/)?.[0] || '',
+            title: '📝 Problem',
+            explanation: text.match(/## 📝 Problem[^#]+/)?.[0] || '',
             latex: null,
             visual_aid: null
           },
           {
             step_number: 2,
-            title: '📋 Step 2 – Plan & Organize',
-            explanation: text.match(/## 📋 Step 2[^#]+/)?.[0] || '',
-            latex: null,
-            visual_aid: null
-          },
-          {
-            step_number: 3,
-            title: '🧮 Step 3 – Solve Step-by-Step',
-            explanation: text.match(/## 🧮 Step 3[^#]+/)?.[0] || '',
-            latex: null,
-            visual_aid: null
-          },
-          {
-            step_number: 4,
-            title: '✅ Step 4 – Verify & Conclude',
-            explanation: text.match(/## ✅ Step 4[^#]+/)?.[0] || '',
+            title: '🧮 Solution',
+            explanation: text.match(/## 🧮 Solution[^#]+/)?.[0] || '',
             latex: null,
             visual_aid: null
           }
