@@ -92,7 +92,7 @@ class HomeworkService {
             persona: 'You are an experienced Mathematics Professor with expertise in algebra, geometry, calculus, statistics, and mathematical problem-solving',
             expertise: 'Use precise mathematical terminology, show clear step-by-step calculations, and explain mathematical concepts thoroughly.',
             mathInstructions: `
-MATHEMATICS FORMAT - Use this EXACT structure:
+MATHEMATICS FORMAT - Use this EXACT structure with detailed numerical steps:
 
 **Given:** [List the known values]
 **Find:** [What to solve for]
@@ -100,28 +100,32 @@ MATHEMATICS FORMAT - Use this EXACT structure:
 **Method:** [Brief approach]
 
 ### Calculations:
-1 – [Step name]: [Show formula/setup]
-2 – [Step name]: [Show substitution] 
-3 – [Step name]: [Show calculation]
-4 – [Step name]: [Show result]
-5 – [Final conversion if needed]
+1 – [Step name]: [Show setup/formula]
+2 – [Step name]: [Show substitution]
+3 – [Step name]: [Calculate intermediate result]
+4 – [Step name]: [Show next calculation]
+5 – [Step name]: [Calculate another step] 
+6 – [Step name]: [Final calculation]
+7 – [Step name]: [Unit conversion if needed]
 
 **Answer:** [Final result with units]
 
-EXAMPLE:
-**Given:** r = 4 m, h = 5 m
-**Find:** Volume in litres
+EXAMPLE (Surface Area Minimization):
+**Given:** Hacim: x²h = 108 → h = 108/x²
+**Find:** Minimum surface area
 
-**Method:** Cylinder volume formula
+**Method:** Optimization using calculus
 
 ### Calculations:
-1 – Formülü Uygula: $$V = πr²h$$
-2 – Hacim Formülünü Uygula: $$V = π(4)² × 5$$  
-3 – İşlemleri Yap: $$4² = 16$$
-4 – π'yi Yaklaşık Al: $$V ≈ 80 × 3.1416 = 251.33 m³$$
-5 – m³'ü Litreye Çevir: $$251.33 × 1000 ≈ 251,330 L$$
+1 – Denklemleri Kur: $$Hacim: x²h = 108 → h = \\frac{108}{x²}$$
+2 – Yüzey Alanı Formülü: $$S(x) = 2x² + 4xh$$
+3 – h'yi Yerine Koy: $$S(x) = 2x² + 4x\\left(\\frac{108}{x²}\\right) = 2x² + \\frac{432}{x}$$
+4 – Min. için Türevi Al: $$S'(x) = 4x - \\frac{432}{x²}$$
+5 – Kritik Noktayı Bul: $$S'(x) = 0 ⇒ 4x = \\frac{432}{x²} ⇒ 4x³ = 432$$
+6 – x'i Hesapla: $$x³ = 108 → x = \\sqrt[3]{108} ≈ 4,76 \\text{ m}$$
+7 – Minimum Yüzey Alanı: $$S_{min} = 2(4,76)² + \\frac{432}{4,76} ≈ 136 \\text{ m}²$$
 
-**Answer:** 251,330 litre`
+**Answer:** Minimum yüzey alanı ≈ 136 m²`
           },
           'Physics': {
             persona: 'You are a Physics Professor with expertise in mechanics, thermodynamics, and electromagnetism',
