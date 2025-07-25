@@ -92,42 +92,117 @@ class HomeworkService {
             persona: 'You are an experienced Mathematics Professor with expertise in algebra, geometry, calculus, statistics, and mathematical problem-solving',
             expertise: 'Use precise mathematical terminology, show clear step-by-step calculations, and explain mathematical concepts thoroughly.',
             mathInstructions: `
-CRITICAL FOR MATHEMATICAL PROBLEMS:
-- Show EVERY numerical calculation step by step
-- For each operation, show the numbers being used and the result
-- Example: Instead of "Solve 2x + 3 = 7", show:
-  Step 1: 2x + 3 = 7
-  Step 2: 2x = 7 - 3 = 4
-  Step 3: x = 4 ÷ 2 = 2
-- For complex calculations, break into micro-steps
-- Always show substitution of values into formulas
-- Show intermediate results clearly
+MATHEMATICS FORMAT - Use this EXACT structure:
 
-CRITICAL MARKDOWN FORMATTING FOR MATHEMATICS:
-- Use rich Markdown with tables, emojis, and LaTeX
-- Mathematical expressions in $$LaTeX$$ blocks
-- Create calculation tables for step-by-step work
-- Use emojis to highlight important information
-- Show detailed numerical calculations with visual formatting
-- Use bold **text** for emphasis and final answers`
+**Given:** [List the known values]
+**Find:** [What to solve for]
+
+**Method:** [Brief approach]
+
+### Calculations:
+1 – [Step name]: [Show formula/setup]
+2 – [Step name]: [Show substitution] 
+3 – [Step name]: [Show calculation]
+4 – [Step name]: [Show result]
+5 – [Final conversion if needed]
+
+**Answer:** [Final result with units]
+
+EXAMPLE:
+**Given:** r = 4 m, h = 5 m
+**Find:** Volume in litres
+
+**Method:** Cylinder volume formula
+
+### Calculations:
+1 – Formülü Uygula: $$V = πr²h$$
+2 – Hacim Formülünü Uygula: $$V = π(4)² × 5$$  
+3 – İşlemleri Yap: $$4² = 16$$
+4 – π'yi Yaklaşık Al: $$V ≈ 80 × 3.1416 = 251.33 m³$$
+5 – m³'ü Litreye Çevir: $$251.33 × 1000 ≈ 251,330 L$$
+
+**Answer:** 251,330 litre`
           },
           'Physics': {
             persona: 'You are a Physics Professor with expertise in mechanics, thermodynamics, and electromagnetism',
             expertise: 'Apply physics principles clearly, use proper formulas with units, and explain concepts simply.',
             mathInstructions: `
-PHYSICS CALCULATIONS:
-- Show numerical substitutions clearly
-- Include units in calculations
-- Keep explanations concise
-- Focus on key physics concepts`
+PHYSICS FORMAT - Use this structure:
+
+**Problem:** [State the physics problem]
+
+**Given:** [List known values with units]
+**Find:** [What to calculate]
+
+**Method:** [Physics principle/law]
+
+### Calculations:
+1 – [Step name]: [Formula/principle]
+2 – [Step name]: [Substitute values]
+3 – [Step name]: [Calculate result]
+4 – [Step name]: [Final calculation]
+
+**Answer:** [Final result with units]
+
+EXAMPLE:
+**Given:** k = 50 N/m, x = 0,10 m, m = 2,0 kg
+**Find:** Kütle hangi hızla fırlar?
+
+### Calculations:
+1 – Enerji Korunumu: $$\\frac{1}{2}kx^2 = \\frac{1}{2}mv^2$$
+2 – Verileri Yerleştir: $$k = 50 \\text{ N/m}, x = 0,10 \\text{ m}, m = 2,0 \\text{ kg}$$
+3 – Yay Enerjisi: $$E_{yay} = \\frac{1}{2} \\times 50 \\times (0,10)^2 = 0,25 \\text{ J}$$
+4 – Hız Hesabı: $$v = \\sqrt{\\frac{kx^2}{m}} = \\sqrt{\\frac{50(0,10)^2}{2,0}} ≈ 0,50 \\text{ m/s}$$
+
+**Answer:** Kütle 0,50 m/s hızla fırlar`
           },
           'Chemistry': {
             persona: 'You are a Chemistry Professor with expertise in chemical reactions and formulas',
             expertise: 'Use chemical formulas correctly, balance equations, and explain reactions clearly.'
           },
           'Biology': {
-            persona: 'You are a Biology Professor specializing in life sciences',
-            expertise: 'Explain biological processes clearly and relate concepts to real examples.'
+            persona: 'You are a Biology Professor specializing in genetics and life sciences',
+            expertise: 'Use Punnett squares, show genetic calculations, and explain biological processes clearly.',
+            mathInstructions: `
+BIOLOGY FORMAT - Use this structure:
+
+**Problem:** [State the biology problem]
+
+### Solution:
+
+1. **[Step name]**
+   [Create Punnett square or diagram if needed]
+   
+2. **[Calculation name]**
+   [Show probability calculations]
+   
+3. **[Result name]**
+   [Calculate final probability]
+
+**Answer:** [Final results]
+
+EXAMPLE:
+**Problem:** Çekinik bir özelliği (aa) gösteren iki heterozigot (Aa x Aa) birey çaprazlanıyor.
+
+### Solution:
+
+1. **Punnett Kare**
+   
+   |   | A  | a  |
+   |---|----|----|
+   | A | AA | Aa |
+   | a | Aa | aa |
+   
+   Genotip oranı: 1AA:2Aa:1aa
+
+2. **a) Çekinik Fenotip**
+   $$P(aa) = \\frac{1}{4} = 0,25$$
+
+3. **b) 4 Yavrununun Tamamı Baskın Fenotip**
+   Baskın = 1 - 0,25 = 0,75
+   $$P = (0,75)^4 ≈ 0,316$$
+
+**Answer:** a) %25  b) ≈ 0,316 (≈ %31,6)`
           },
           'Computer Science': {
             persona: 'You are a Computer Science Professor with expertise in programming and algorithms',
@@ -170,8 +245,42 @@ PHYSICS CALCULATIONS:
             expertise: 'Explain environmental systems, analyze ecological relationships, discuss climate change, and promote sustainable solutions.'
           },
           'Engineering': {
-            persona: 'You are an Engineering Professor with expertise in mechanical, electrical, and civil engineering principles',
-            expertise: 'Apply engineering concepts, solve technical problems, explain design processes, and use mathematical modeling.'
+            persona: 'You are an Engineering Professor with expertise in mechanical and civil engineering',
+            expertise: 'Apply engineering formulas, solve technical problems with clear calculations.',
+            mathInstructions: `
+ENGINEERING FORMAT - Use this structure:
+
+**Problem:** [State the engineering problem]
+
+**Given:** [List specifications and values]
+**Find:** [What to calculate]
+
+**Method:** [Engineering principle/formula]
+
+### Calculations:
+1 – [Step name]: [Formula and explanation]
+2 – [Step name]: [Numerical substitution]
+3 – [Step name]: [Calculate intermediate result]
+
+**Answer:** [Final results with units]
+
+EXAMPLE:
+**Problem:** Çapı 20 mm olan çelik çubuğa 35 kN eksenel çekme kuvveti uygulanıyor.
+
+**Given:** Çap = 20 mm, F = 35 kN, E = 200 GPa, L = 2,0 m
+**Find:** a) Normal gerilme (σ), b) Uzama (ΔL)
+
+### Calculations:
+1 – Kesit Alanı: $$A = πr^2$$
+   $$r = 10 \\text{ mm} = 0,010 \\text{ m} → A = 3,14 × 10^{-4} \\text{ m}^2$$
+
+2 – Gerilme: $$σ = \\frac{F}{A}$$
+   $$σ = \\frac{35000}{3,14 × 10^{-4}} ≈ 111 \\text{ MPa}$$
+
+3 – Uzama: $$Hooke: ε = \\frac{σ}{E}, ΔL = εL$$
+   $$ε = \\frac{111 × 10^6}{200 × 10^9} = 5,55 × 10^{-4} ⇒ ΔL = 5,55 × 10^{-4} × 2,0 ≈ 1,1 \\text{ mm}$$
+
+**Answer:** a) σ ≈ 111 MPa  b) ΔL ≈ 1,1 mm`
           },
           'Business Studies': {
             persona: 'You are a Business Professor specializing in management, marketing, and entrepreneurship',
