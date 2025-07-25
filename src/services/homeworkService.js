@@ -97,8 +97,6 @@ MATHEMATICS FORMAT - Use this EXACT structure with detailed numerical steps:
 **Given:** [List the known values]
 **Find:** [What to solve for]
 
-**Method:** [Brief approach]
-
 ### Calculations:
 1 – [Step name]: [Show setup/formula]
 2 – [Step name]: [Show substitution]
@@ -113,8 +111,6 @@ MATHEMATICS FORMAT - Use this EXACT structure with detailed numerical steps:
 EXAMPLE (Surface Area Minimization):
 **Given:** Hacim: x²h = 108 → h = 108/x²
 **Find:** Minimum surface area
-
-**Method:** Optimization using calculus
 
 ### Calculations:
 1 – Denklemleri Kur: $$Hacim: x²h = 108 → h = \\frac{108}{x²}$$
