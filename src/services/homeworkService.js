@@ -10,7 +10,7 @@ class HomeworkService {
   async solveHomework(imageBuffer, imageUrl, locale = 'tr', subjectId = null) {
     try {
       console.log('🤖 AI: Processing start');
-      const model = this.genAI.getGenerativeModel({ model: 'gemini-2.5-flash', generationConfig: { responseMimeType: 'application/json' } });
+      const model = this.genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
       
       const base64ImageData = imageBuffer.toString('base64');
       
@@ -103,14 +103,13 @@ CRITICAL FOR MATHEMATICAL PROBLEMS:
 - Always show substitution of values into formulas
 - Show intermediate results clearly
 
-CRITICAL JSON FORMATTING FOR MATHEMATICS:
-- NEVER use mathematical symbols like ×, ÷, ±, √ directly in JSON strings
-- ALWAYS escape special characters properly
-- Use \\times instead of ×, \\div instead of ÷
-- Use proper LaTeX formatting: \\sqrt{} instead of √
-- Replace ± with \\pm in LaTeX expressions
-- Ensure all quotes in explanations are properly escaped
-- Keep mathematical expressions in LaTeX field only`
+CRITICAL MARKDOWN FORMATTING FOR MATHEMATICS:
+- Use rich Markdown with tables, emojis, and LaTeX
+- Mathematical expressions in $$LaTeX$$ blocks
+- Create calculation tables for step-by-step work
+- Use emojis to highlight important information
+- Show detailed numerical calculations with visual formatting
+- Use bold **text** for emphasis and final answers`
           },
           'Physics': {
             persona: 'You are a Physics Professor specializing in mechanics, thermodynamics, electromagnetism, optics, and modern physics',
@@ -282,55 +281,46 @@ ${mathInstructions}
    🧮 **Step 3 – Solve Step-by-Step**
    ✅ **Step 4 – Verify & Conclude**
 
-You MUST respond with ONLY a valid JSON object (no other text) in this exact structure:
-{
-  "problem_statement": "Exact problem as shown in the image",
-  "solution": "Final answer with units if applicable",
-  "methodology": "Solution approach (e.g., algebraic, geometric, calculus, etc.)",
-  "confidence": 0.95,
-  "steps": [
-    {
-      "step_number": 1,
-      "title": "🔍 Step 1 – Understand the Problem",
-      "explanation": "📋 List ALL given data (use tables for multiple values). 🎯 Clearly state what needs to be found. Use emojis for better organization.",
-      "latex": "Mathematical expressions in LaTeX format if applicable",
-      "visual_aid": "Any helpful diagram description or data table"
-    },
-    {
-      "step_number": 2,
-      "title": "📋 Step 2 – Plan & Organize",
-      "explanation": "📐 Choose appropriate formulas/methods and explain WHY they apply. 💡 Show the logical reasoning behind the approach. Include relevant formulas with LaTeX.",
-      "latex": "Relevant formulas in LaTeX format",
-      "visual_aid": "Formula explanations or conceptual diagrams"
-    },
-    {
-      "step_number": 3,
-      "title": "🧮 Step 3 – Solve Step-by-Step",
-      "explanation": "🔢 Show EVERY numerical substitution and calculation step. 🧮 Break complex calculations into micro-steps. ⚠️ Include warning notes for common mistakes. Use tables for organizing complex calculations.",
-      "latex": "Detailed step-by-step calculations in LaTeX",
-      "visual_aid": "Calculation tables or step-by-step breakdown"
-    },
-    {
-      "step_number": 4,
-      "title": "✅ Step 4 – Verify & Conclude",
-      "explanation": "🔍 Verify the result makes sense (check units, magnitude, etc.). ✅ State final answer clearly with **Answer: <result + units>** in bold. 💡 Add any important insights or alternative methods.",
-      "latex": "Final answer verification in LaTeX if applicable",
-      "visual_aid": "Result verification or summary table"
-    }
-  ]
-}
+Respond in rich Markdown format with the following structure:
+
+## 🔍 Step 1 – Understand the Problem
+
+📋 **Given Data:**
+[Create a table if multiple values, use emojis for organization]
+
+🎯 **Find:** [What needs to be solved]
+
+---
+
+## 📋 Step 2 – Plan & Organize  
+
+📐 **Method:** [Solution approach]
+
+💡 **Formulas:**
+$$LaTeX formulas here$$
+
+---
+
+## 🧮 Step 3 – Solve Step-by-Step
+
+🔢 **Calculations:**
+[Show EVERY numerical step with tables, emojis, detailed breakdown]
+
+⚠️ **Important Notes:** [Common mistakes to avoid]
+
+---
+
+## ✅ Step 4 – Verify & Conclude
+
+🔍 **Verification:** [Check units, magnitude, reasonableness]
+
+✅ **Final Answer:** **[Result with units]**
+
+💡 **Key Insights:** [Additional notes or alternative methods]
 
 Language: ${langConfig.language}
 
-CRITICAL JSON OUTPUT REQUIREMENTS:
-- Output ONLY a valid JSON object, no additional text before or after
-- Do NOT wrap in markdown code blocks (no \`\`\`json)
-- Do NOT use special mathematical symbols (×, ÷, ±, √) in JSON strings
-- Use proper LaTeX formatting in the "latex" fields only
-- Escape all quotes and special characters in explanation strings
-- Test JSON validity before responding
-
-Return ONLY a pure JSON object. Do NOT wrap in markdown.`;
+Use rich Markdown formatting with tables, emojis, LaTeX math, and detailed visual organization.`;
 
       console.log('🚀 AI: Calling Gemini');
       const aiCallStart = Date.now();
@@ -354,71 +344,72 @@ Return ONLY a pure JSON object. Do NOT wrap in markdown.`;
       const text = response.text();
       console.log(`📦 AI: Response received (took ${Date.now() - aiCallStart}ms)`);
       
-      // Clean the response to extract JSON
-      let jsonResponse;
-      try {
-        // Remove any markdown code blocks if present
-        let cleanedText = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-        
-        // Try to extract JSON from the text if it's mixed with other content
-        const jsonMatch = cleanedText.match(/\{[\s\S]*\}/);
-        if (jsonMatch) {
-          cleanedText = jsonMatch[0];
-        }
-        
-        jsonResponse = JSON.parse(cleanedText);
-      } catch (parseError) {
-        console.log('❌ AI: Parse failed');
-        console.error('Failed to parse AI response:', parseError.message);
-        console.error('Raw AI response:', text);
-        
-        // Try to create a basic response structure from the text
-        try {
-          // If we can't parse JSON, create a simple response
-          const lines = text.split('\n').filter(line => line.trim());
-          jsonResponse = {
-            problem_statement: "Problem identified from image",
-            solution: lines[lines.length - 1] || "Solution could not be extracted",
-            methodology: "general",
-            confidence: 0.7,
-            steps: [{
-              step_number: 1,
-              title: "Solution",
-              explanation: text,
-              latex: null,
-              visual_aid: null
-            }]
-          };
-        } catch (fallbackError) {
-          throw new ApiError('Failed to parse homework solution', 500);
-        }
-      }
+      // Process Markdown response
+      console.log('✨ AI: Processing Markdown solution');
       
-      // Validate response structure
-      if (!jsonResponse.solution || !jsonResponse.steps || !Array.isArray(jsonResponse.steps)) {
-        throw new ApiError('Invalid solution format from AI', 500);
-      }
+      // Extract problem statement from the content
+      const problemMatch = text.match(/## 🔍 Step 1[^#]+?🎯 \*\*Find:\*\* (.+?)(?=\n|$)/);
+      const problemStatement = problemMatch ? problemMatch[1].trim() : 'Problem identified from image';
       
-      // Ensure all steps have required fields
-      jsonResponse.steps = jsonResponse.steps.map((step, index) => ({
-        step_number: step.step_number || index + 1,
-        title: step.title || `Step ${index + 1}`,
-        explanation: step.explanation || '',
-        latex: step.latex || null,
-        visual_aid: step.visual_aid || null
-      }));
+      // Extract final answer
+      const answerMatch = text.match(/✅ \*\*Final Answer:\*\* \*\*(.+?)\*\*/);
+      const solution = answerMatch ? answerMatch[1].trim() : 'Solution completed';
+      
+      // Extract methodology from the method section
+      const methodMatch = text.match(/📐 \*\*Method:\*\* (.+?)(?=\n|$)/);
+      const methodology = methodMatch ? methodMatch[1].toLowerCase().trim() : 'general';
+      
+      // Create structured response with Markdown content
+      const markdownResponse = {
+        problem_statement: problemStatement,
+        solution: solution,
+        methodology: methodology,
+        confidence_score: 0.9, // High confidence for Markdown format
+        steps: [
+          {
+            step_number: 1,
+            title: '🔍 Step 1 – Understand the Problem',
+            explanation: text.match(/## 🔍 Step 1[^#]+/)?.[0] || '',
+            latex: null,
+            visual_aid: null
+          },
+          {
+            step_number: 2,
+            title: '📋 Step 2 – Plan & Organize',
+            explanation: text.match(/## 📋 Step 2[^#]+/)?.[0] || '',
+            latex: null,
+            visual_aid: null
+          },
+          {
+            step_number: 3,
+            title: '🧮 Step 3 – Solve Step-by-Step',
+            explanation: text.match(/## 🧮 Step 3[^#]+/)?.[0] || '',
+            latex: null,
+            visual_aid: null
+          },
+          {
+            step_number: 4,
+            title: '✅ Step 4 – Verify & Conclude',
+            explanation: text.match(/## ✅ Step 4[^#]+/)?.[0] || '',
+            latex: null,
+            visual_aid: null
+          }
+        ],
+        full_markdown: text // Store complete Markdown response
+      };
       
       // Return formatted response
-      console.log('✨ AI: Solution ready');
+      console.log('✨ AI: Markdown solution ready');
       return {
         image_url: imageUrl,
-        problem_statement: jsonResponse.problem_statement || 'Problem identified from image',
-        solution: jsonResponse.solution,
-        methodology: jsonResponse.methodology || 'general',
-        confidence_score: jsonResponse.confidence || 0.85,
-        steps: jsonResponse.steps,
+        problem_statement: markdownResponse.problem_statement,
+        solution: markdownResponse.solution,
+        methodology: markdownResponse.methodology,
+        confidence_score: markdownResponse.confidence_score,
+        steps: markdownResponse.steps,
         locale: locale,
-        ai_response: jsonResponse // Store full response for debugging
+        ai_response: markdownResponse,
+        full_markdown: text // Include full Markdown for client use
       };
     } catch (error) {
       console.log('🔥 AI: Error occurred');
