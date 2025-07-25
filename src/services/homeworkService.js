@@ -563,17 +563,16 @@ Be CONCISE. NO TABLES. Focus on clear step-by-step calculations.`;
       // Process Markdown response
       console.log('✨ AI: Processing Markdown solution');
       
-      // Extract problem statement from the content
-      const problemMatch = text.match(/## 📝 Problem\s*\n(.+?)(?=\n|$)/);
+      // Extract problem statement from the content - look for the first meaningful content
+      const problemMatch = text.match(/^(.+?)(?=\n|\r|$)/m);
       const problemStatement = problemMatch ? problemMatch[1].trim() : 'Problem identified from image';
       
-      // Extract final answer
-      const answerMatch = text.match(/✅ \*\*(.+?)\*\*/);
+      // Extract final answer - look for Answer section
+      const answerMatch = text.match(/\*\*Answer:\*\*\s*\*\*(.+?)\*\*/) || text.match(/\*\*Answer:\*\*\s*(.+?)(?=\n|$)/);
       const solution = answerMatch ? answerMatch[1].trim() : 'Solution completed';
       
-      // Extract methodology from the method section
-      const methodMatch = text.match(/\*\*Method:\*\* (.+?)(?=\n|$)/);
-      const methodology = methodMatch ? methodMatch[1].toLowerCase().trim() : 'general';
+      // Determine methodology based on subject or content
+      const methodology = subject ? subject.toLowerCase() : 'general';
       
       // Create structured response with Markdown content
       const markdownResponse = {
@@ -584,15 +583,15 @@ Be CONCISE. NO TABLES. Focus on clear step-by-step calculations.`;
         steps: [
           {
             step_number: 1,
-            title: '📝 Problem',
-            explanation: text.match(/## 📝 Problem[^#]+/)?.[0] || '',
+            title: 'Problem',
+            explanation: text.substring(0, Math.min(text.indexOf('### Solution:'), 500)) || 'Problem identified',
             latex: null,
             visual_aid: null
           },
           {
             step_number: 2,
-            title: '🧮 Solution',
-            explanation: text.match(/## 🧮 Solution[^#]+/)?.[0] || '',
+            title: 'Solution',
+            explanation: text.match(/### Solution:([\s\S]*?)(?=\*\*Answer:|$)/)?.[1]?.trim() || text,
             latex: null,
             visual_aid: null
           }
