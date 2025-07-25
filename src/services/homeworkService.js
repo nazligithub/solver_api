@@ -92,36 +92,36 @@ class HomeworkService {
             persona: 'You are an experienced Mathematics Professor with expertise in algebra, geometry, calculus, statistics, and mathematical problem-solving',
             expertise: 'Use precise mathematical terminology, show clear step-by-step calculations, and explain mathematical concepts thoroughly.',
             mathInstructions: `
-MATHEMATICS FORMAT - Use this EXACT structure with detailed numerical steps:
+MATHEMATICS - Show ONLY direct step-by-step calculations:
 
-**Given:** [List the known values]
-**Find:** [What to solve for]
-
-### Calculations:
-1 – [Step name]: [Show setup/formula]
-2 – [Step name]: [Show substitution]
-3 – [Step name]: [Calculate intermediate result]
-4 – [Step name]: [Show next calculation]
-5 – [Step name]: [Calculate another step] 
-6 – [Step name]: [Final calculation]
-7 – [Step name]: [Unit conversion if needed]
-
-**Answer:** [Final result with units]
-
-EXAMPLE (Surface Area Minimization):
-**Given:** Hacim: x²h = 108 → h = 108/x²
-**Find:** Minimum surface area
+**Given:** [List values briefly]
+**Find:** [What to solve]
 
 ### Calculations:
-1 – Denklemleri Kur: $$Hacim: x²h = 108 → h = \\frac{108}{x²}$$
-2 – Yüzey Alanı Formülü: $$S(x) = 2x² + 4xh$$
-3 – h'yi Yerine Koy: $$S(x) = 2x² + 4x\\left(\\frac{108}{x²}\\right) = 2x² + \\frac{432}{x}$$
-4 – Min. için Türevi Al: $$S'(x) = 4x - \\frac{432}{x²}$$
-5 – Kritik Noktayı Bul: $$S'(x) = 0 ⇒ 4x = \\frac{432}{x²} ⇒ 4x³ = 432$$
-6 – x'i Hesapla: $$x³ = 108 → x = \\sqrt[3]{108} ≈ 4,76 \\text{ m}$$
-7 – Minimum Yüzey Alanı: $$S_{min} = 2(4,76)² + \\frac{432}{4,76} ≈ 136 \\text{ m}²$$
+1 – [Step]: [Formula + numbers] ⇒ [Result]
+2 – [Step]: [Calculation] ⇒ [Result] 
+3 – [Step]: [Next calculation] ⇒ [Result]
+4 – [Step]: [Continue] ⇒ [Result]
+5 – [Step]: [More calculation] ⇒ [Result]
+6 – [Step]: [Final step] ⇒ [Result]
 
-**Answer:** Minimum yüzey alanı ≈ 136 m²`
+⚠️ **NO METHOD section**  
+⚠️ **NO explanations - just calculations**  
+⚠️ **Show every numerical step**
+
+**Answer:** [Final result]
+
+TANK EXAMPLE:
+**Given:** r = 1.5 m, h = 2.8 m, Rate = 45 L/min  
+**Find:** Fill time in hours
+
+### Calculations:
+1 – **Hacim**: $$V = πr²h = π(1.5)² × 2.8 = π × 2.25 × 2.8$$ ⇒ **19.79 m³**
+2 – **Litreye Çevir**: $$19.79 × 1000$$ ⇒ **19,790 L**
+3 – **Süre (dakika)**: $$t = \\frac{19790}{45}$$ ⇒ **439.8 dakika**
+4 – **Saate Çevir**: $$t = \\frac{439.8}{60}$$ ⇒ **7.33 saat**
+
+**Answer:** **7.33 saat**`
           },
           'Physics': {
             persona: 'You are a Physics Professor with expertise in mechanics, thermodynamics, and electromagnetism',
